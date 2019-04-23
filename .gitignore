@@ -1,3 +1,5 @@
+.shadow-cljs
+
 # OSX
 #
 .DS_Store
@@ -54,3 +56,4 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+.nrepl-port
