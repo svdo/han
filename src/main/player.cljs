@@ -1,6 +1,5 @@
 (ns player
-  (:require [reagent.core :as r]
-            ["react-native-webview" :as rnwv :refer [WebView]]))
+  (:require ["react-native-webview" :as rnwv :refer [WebView]]))
 
 (defn Player []
   [:> WebView {:origin-whitelist ["*"]
