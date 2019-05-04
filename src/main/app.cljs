@@ -1,7 +1,7 @@
 (ns app
   (:require [reagent.core :as r :refer [atom]]
             ["react-native" :as rn :refer [AppRegistry, Platform]]
-            ["react-native-webview" :as rnwv :refer [WebView]]))
+            [player :refer [Player]]))
 
 (def styles
   {:container
@@ -29,9 +29,7 @@
    [:> rn/Text {:style (:welcome styles)} "Welcome to React Native!"]
    [:> rn/Text {:style (:instructions styles)} "To get started, edit app.cljs"]
    [:> rn/Text {:style (:instructions styles)} instructions]
-   [:> WebView {:origin-whitelist ["*"]
-                :source {:html "<h1>Hi!</h1>"}
-                :injected-java-script "document.body.style.backgroundColor='red';true"}]])
+   [Player]])
 
 (defonce app-root-ref (atom nil))
 
