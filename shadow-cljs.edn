@@ -12,4 +12,11 @@
   {:target :react-native
    :init-fn app/init
    :output-dir "build"
-   :devtools {:autoload true}}}}
+   :devtools {:autoload true}}
+
+  :player
+  {:target :browser
+   :asset-path "/audio-engine"
+   :output-dir "public/audio-engine"
+   :devtools {:loader-mode :eval}
+   :modules {:index {:entries [audio.engine]}}}}}

@@ -10,7 +10,7 @@
     "server": "shadow-cljs server",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "watch": "shadow-cljs watch :han"
+    "watch": "shadow-cljs watch :han :player"
   },
   "dependencies": {
     "react": "16.8.3",
