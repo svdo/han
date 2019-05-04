@@ -1,23 +1,8 @@
 (ns app
   (:require [reagent.core :as r :refer [atom]]
             ["react-native" :as rn :refer [AppRegistry, Platform]]
-            [player :refer [Player]]))
-
-(def styles
-  {:container
-   {:flex 1
-    :justify-content "center"
-    :background-color "#F5FCFF"}
-
-   :welcome
-   {:font-size 20
-    :text-align "center"
-    :margin 10}
-
-   :instructions
-   {:text-align "center"
-    :color "#333333"
-    :margin-bottom 5}})
+            [player :refer [Player]]
+            [styles :refer [styles]]))
 
 (def instructions
   (.select Platform
