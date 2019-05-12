@@ -1,8 +1,12 @@
 (ns app
-  (:require [reagent.core :as r :refer [atom]]
+  (:require [devtools.core :as devtools]
+            [reagent.core :as r :refer [atom]]
             ["react-native" :as rn :refer [AppRegistry, Platform]]
             [player :refer [Player]]
             [styles :refer [styles]]))
+
+(devtools/set-pref! :disable-advanced-mode-check true)
+(devtools/install!)
 
 (def instructions
   (.select Platform
