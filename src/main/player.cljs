@@ -27,11 +27,12 @@
     (js/setTimeout
      #(.injectJavaScript ref javascript) 1000)))
 
-(defn Player []
-  [:> WebView {:ref (fn [r] (inject-javascript r))
-               :media-playback-requires-user-action false
-               :java-script-enabled true
-               :allow-file-access true
-               :allow-universal-access-from-file-URLs true
-               :origin-whitelist ["*"]
-               :source {:html "<body style='font-size: 200%'><h1>Hi!</h1></body>"}}])
+(defn Player [styles]
+  [:> WebView (merge styles
+                     {:ref (fn [r] (inject-javascript r))
+                      :media-playback-requires-user-action false
+                      :java-script-enabled true
+                      :allow-file-access true
+                      :allow-universal-access-from-file-URLs true
+                      :origin-whitelist ["*"]
+                      :source {:html "<body style='font-size: 200%'><h1>Hi!</h1></body>"}})])

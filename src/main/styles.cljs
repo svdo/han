@@ -14,5 +14,9 @@
    :instructions
    {:text-align "center"
     :color "#333333"
-    :margin-bottom 5}})
+    :margin-bottom 5}
+
+   :player
+   {:flex 0
+    :height 300}})
 
