@@ -4,26 +4,27 @@
 
 (defonce javascript-injected (atom false))
 
+(def replace-console-log
+  (str "var console={};"
+       "console.log=function(message){"
+       "  var output=JSON.stringify(arguments);"
+       "  if (arguments.length > 2 && arguments[2].message){"
+       "    output+=arguments[2].message+'\\n'+arguments[2].stack;"
+       "  };"
+       "  document.body.innerHTML+='<pre>'+output+'</pre>';"
+       "};"
+       "console.info=console.log;"
+       "console.error=console.log;"
+       "console.exception=console.error;"
+       "console.warn=console.log;"
+       "window.console=console;"))
+
 (defn inject-javascript [ref]
   (when (and (not (nil? ref))
              (false? @javascript-injected))
     (reset! javascript-injected true)
-    (def replace-console-log
-      (str "var console={};"
-           "console.log=function(message){"
-           "  document.body.innerHTML+='<p>'+JSON.stringify(arguments)+'</p>';"
-           "  if (arguments.length > 2 && arguments[2].message){"
-           "    document.body.innerHTML+='<p>'+arguments[2].message+'<br/><pre>'+arguments[2].stack+'</pre></p>'"
-           "  };"
-           "};"
-           "console.error=console.log;"
-           "console.exception=console.error;"
-           "console.warn=console.log;"
-           "window.console=console;"))
-    (def audio-engine-source (str replace-console-log
-                                  (rc/inline "audio-engine-compiled-js-source.txt")))
+    (def audio-engine-source (rc/inline "audio-engine-compiled-js-source.txt"))
     (def javascript (str replace-console-log audio-engine-source ";true"))
-
     (js/setTimeout
      #(.injectJavaScript ref javascript) 1000)))
 
