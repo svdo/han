@@ -19,14 +19,16 @@
        "console.warn=console.log;"
        "window.console=console;"))
 
+(defn initial-js []
+  (def audio-engine-source (rc/inline "audio-engine-compiled-js-source.txt"))
+  (str replace-console-log audio-engine-source ";true"))
+
 (defn inject-javascript [ref]
   (when (and (not (nil? ref))
              (false? @javascript-injected))
     (reset! javascript-injected true)
-    (def audio-engine-source (rc/inline "audio-engine-compiled-js-source.txt"))
-    (def javascript (str replace-console-log audio-engine-source ";true"))
     (js/setTimeout
-     #(.injectJavaScript ref javascript) 1000)))
+     #(.injectJavaScript ref (initial-js)) 1000)))
 
 (defn Player [styles]
   [:> WebView (merge styles
