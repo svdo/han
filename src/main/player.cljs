@@ -7,11 +7,14 @@
 (def replace-console-log
   (str "var console={};"
        "console.log=function(message){"
-       "  var output=JSON.stringify(arguments);"
+       "  var output={arguments:arguments};"
        "  if (arguments.length > 2 && arguments[2].message){"
-       "    output+=arguments[2].message+'\\n'+arguments[2].stack;"
+       "    output.message=arguments[2].message;"
+       "    output.stack=arguments[2].stack;"
        "  };"
-       "  document.body.innerHTML+='<pre>'+output+'</pre>';"
+       "  var asString=JSON.stringify(output);"
+       "  document.body.innerHTML+='<pre>'+asString+'</pre>';"
+       "  window.ReactNativeWebView.postMessage(asString);"
        "};"
        "console.info=console.log;"
        "console.error=console.log;"
@@ -30,6 +33,12 @@
     (js/setTimeout
      #(.injectJavaScript ref (initial-js)) 1000)))
 
+(defn message-from-webview [event]
+  (let [native-event (.-nativeEvent event)
+        data (.-data native-event)
+        parsed (js/JSON.parse data)]
+    (js/console.log "Message from web view:" parsed)))
+
 (defn Player [styles]
   [:> WebView (merge styles
                      {:ref (fn [r] (inject-javascript r))
@@ -38,4 +47,5 @@
                       :allow-file-access true
                       :allow-universal-access-from-file-URLs true
                       :origin-whitelist ["*"]
-                      :source {:html "<body style='font-size: 200%'><h1>Hi!</h1></body>"}})])
+                      :source {:html "<body style='font-size: 200%'><h1>Hi!</h1></body>"}
+                      :on-message message-from-webview})])
