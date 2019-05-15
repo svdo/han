@@ -13,7 +13,7 @@
            #js {:ios "Press Cmd+R to reload,\nCmd+D or shake for dev menu"
                 :android "Double tap R on your keyboard to reload,\nShake or press menu button for dev menu"}))
 
-(defn app-root []
+(defn BuildingBlocks []
   [:> rn/View {:style (:approot styles)}
    [:> rn/View {:style (:container styles)}
     [:> rn/Text {:style (:welcome styles)} "Welcome to React Native!"]
@@ -23,6 +23,9 @@
                    :on-press player/play-a-note}]]
    [:> rn/View
     [Player {:style (:player styles)}]]])
+
+(defn app-root []
+  [BuildingBlocks])
 
 (defonce app-root-ref (atom nil))
 
