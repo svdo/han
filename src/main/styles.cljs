@@ -1,7 +1,12 @@
 (ns styles)
 
 (def styles
-  {:container
+  {:approot
+   {:flex 1
+    :justify-content "center"
+    :background-color "green"}
+
+   :container
    {:flex 1
     :justify-content "center"
     :background-color "#F5FCCC"}
@@ -17,5 +22,9 @@
     :margin-bottom 5}
 
    :player
-   {:display "none"}})
+   {:position "absolute"
+    :flex 0
+    :top 0
+    :height 0
+    :width 0}})
 

@@ -14,13 +14,15 @@
                 :android "Double tap R on your keyboard to reload,\nShake or press menu button for dev menu"}))
 
 (defn app-root []
-  [:> rn/View {:style (:container styles)}
-   [:> rn/Text {:style (:welcome styles)} "Welcome to React Native!"]
-   [:> rn/Text {:style (:instructions styles)} "To get started, edit app.cljs"]
-   [:> rn/Text {:style (:instructions styles)} instructions]
-   [:> rn/Button {:title "Play a note"
-                  :on-press player/play-a-note}]
-   [Player {:style (:player styles)}]])
+  [:> rn/View {:style (:approot styles)}
+   [:> rn/View {:style (:container styles)}
+    [:> rn/Text {:style (:welcome styles)} "Welcome to React Native!"]
+    [:> rn/Text {:style (:instructions styles)} "To get started, edit app.cljs"]
+    [:> rn/Text {:style (:instructions styles)} instructions]
+    [:> rn/Button {:title "Play a note"
+                   :on-press player/play-a-note}]]
+   [:> rn/View
+    [Player {:style (:player styles)}]]])
 
 (defonce app-root-ref (atom nil))
 
