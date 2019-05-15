@@ -4,26 +4,9 @@
 
 (defonce javascript-injected (atom false))
 
-(def replace-console-log
-  (str "var console={};"
-       "console.log=function(message){"
-       "  var output={arguments:arguments};"
-       "  if (arguments.length > 2 && arguments[2].message){"
-       "    output.message=arguments[2].message;"
-       "    output.stack=arguments[2].stack;"
-       "  };"
-       "  var asString=JSON.stringify(output);"
-       "  document.body.innerHTML+='<pre>'+asString+'</pre>';"
-       "  window.ReactNativeWebView.postMessage(asString);"
-       "};"
-       "console.info=console.log;"
-       "console.error=console.log;"
-       "console.exception=console.error;"
-       "console.warn=console.log;"
-       "window.console=console;"))
-
 (defn initial-js []
   (def audio-engine-source (rc/inline "audio-engine-compiled-js-source.txt"))
+  (def replace-console-log (rc/inline "replace-console-log.js"))
   (str replace-console-log audio-engine-source ";true"))
 
 (defn inject-javascript [ref]
