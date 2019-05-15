@@ -2,6 +2,7 @@
   (:require ["react-native-webview" :as rnwv :refer [WebView]]
             [shadow.resource :as rc]))
 
+(defonce webview-ref (atom nil))
 (defonce javascript-injected (atom false))
 
 (defn initial-js []
@@ -13,6 +14,7 @@
   (when (and (not (nil? ref))
              (false? @javascript-injected))
     (reset! javascript-injected true)
+    (reset! webview-ref ref)
     (js/setTimeout
      #(.injectJavaScript ref (initial-js)) 1000)))
 
@@ -35,3 +37,7 @@
                       :origin-whitelist ["*"]
                       :source {:html "<body style='font-size: 200%'><h1>Hi!</h1></body>"}
                       :on-message message-from-webview})])
+
+(defn play-a-note []
+  (when (not (nil? @webview-ref))
+    (.injectJavaScript @webview-ref "audio.engine.schedule_note();true")))

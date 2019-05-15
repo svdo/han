@@ -18,6 +18,8 @@
    [:> rn/Text {:style (:welcome styles)} "Welcome to React Native!"]
    [:> rn/Text {:style (:instructions styles)} "To get started, edit app.cljs"]
    [:> rn/Text {:style (:instructions styles)} instructions]
+   [:> rn/Button {:title "Play a note"
+                  :on-press player/play-a-note}]
    [Player {:style (:player styles)}]])
 
 (defonce app-root-ref (atom nil))
