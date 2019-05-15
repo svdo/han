@@ -1,7 +1,7 @@
 var console={};
 function replaceConsole(logType){
   return function() {
-    var output={type:logType, args:arguments};
+    var output={logType:logType, args:arguments};
     if (arguments.length > 2 && arguments[2].message){
       output.message=arguments[2].message;
       output.stack=arguments[2].stack;

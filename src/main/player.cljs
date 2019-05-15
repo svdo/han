@@ -19,8 +19,11 @@
 (defn message-from-webview [event]
   (let [native-event (.-nativeEvent event)
         data (.-data native-event)
-        parsed (js/JSON.parse data)]
-    (js/console.log "Message from web view:" parsed)))
+        parsed (js/JSON.parse data)
+        logType (.-logType parsed)]
+    (when (not (nil? logType))
+      (let [log-fn (goog.object/get js/console logType)]
+        (.apply log-fn js/console (goog.object/getValues (.-args parsed)))))))
 
 (defn Player [styles]
   [:> WebView (merge styles
