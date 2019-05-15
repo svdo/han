@@ -7,7 +7,6 @@ function replaceConsole(logType){
       output.stack=arguments[2].stack;
     };
     var asString=JSON.stringify(output);
-    document.body.innerHTML+='<pre>'+asString+'</pre>';
     window.ReactNativeWebView.postMessage(asString);
     }
 };
