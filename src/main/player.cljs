@@ -16,7 +16,7 @@
     (reset! javascript-injected true)
     (reset! webview-ref ref)
     (js/setTimeout
-     #(.injectJavaScript ref (initial-js)) 1000)))
+     #(.injectJavaScript ref (initial-js)))))
 
 (defn message-from-webview [event]
   (let [native-event (.-nativeEvent event)
