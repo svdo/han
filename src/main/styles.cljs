@@ -17,6 +17,5 @@
     :margin-bottom 5}
 
    :player
-   {:flex 0
-    :height 300}})
+   {:display "none"}})
 
