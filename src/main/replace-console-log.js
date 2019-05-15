@@ -11,6 +11,7 @@ function replaceConsole(logType){
     window.ReactNativeWebView.postMessage(asString);
     }
 };
+console.debug=replaceConsole('debug');
 console.log=replaceConsole('log');
 console.info=replaceConsole('info');
 console.error=replaceConsole('error');
