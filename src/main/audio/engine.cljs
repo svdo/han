@@ -33,10 +33,8 @@
 
     (try
       (let [osc (.createOscillator @audioContext)]
-        ; (.connect (.connect osc gain) (.-destination @audioContext))
-        ; (.connect osc (.-destination @audioContext))
         (-> osc
-            ; (.connect gain)
+            (.connect gain)
             (.connect (.-destination @audioContext)))
         (goog.object/set (.-frequency osc) "value" 880)
         (.start osc time)
