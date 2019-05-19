@@ -1,6 +1,9 @@
 (ns player
   (:require ["react-native-webview" :as rnwv :refer [WebView]]
             [oops.core :refer [oget+]]
+            [clojure.spec.alpha :as s]
+            [clojure.test.check.generators]
+            [cljs.spec.gen.alpha :as gen]
             [shadow.resource :as rc]))
 
 (defonce webview-ref (atom nil))
@@ -44,7 +47,38 @@
   (when (not (nil? @webview-ref))
     (.injectJavaScript @webview-ref "audio.engine.schedule_note();true")))
 
+(s/def :time-signature/duration #{1 2 4 8 16 32 64})
+(s/def :time-signature/beats pos-int?)
+(s/def :measure/time-signature (s/tuple :time-signature/beats :time-signature/duration))
+
+(def note-lengths #{:dotted-whole :whole  
+                    :dotted-half :half
+                    :dotted-quarter :quarter
+                    :dotted-eighth :eighth
+                    :dotted-sixteenth :sixteenth})
+
+(s/def :measure/number pos-int?)
+(s/def :measure/accents (s/coll-of (s/int-in 0 2)))
+
+(s/def :piece/measure (s/and (s/keys :req [:time-signature/beats :time-signature/duration]
+                                     :opt [:measure/accents])
+                             #(or
+                               (nil? (:measure/accents %))
+                               (= (count (:measure/accents %))
+                                  (:time-signature/beats %)))))
+
 (comment
-  
+  (in-ns 'player)
   (play-a-note)
+  
+  (gen/sample (s/gen :measure/time-signature))
+  (gen/sample (s/gen :measure/accents))
+  (gen/sample (s/gen :piece/measure))
+  
+  (def sample-measure {:time-signature/beats 3
+                       :time-signature/duration 8
+                       })
+  (s/conform :piece/measure sample-measure)
+  (s/explain :piece/measure sample-measure)
+  
   )
