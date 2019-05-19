@@ -20,5 +20,6 @@
   {:target :browser
    :asset-path "/audio-engine"
    :output-dir "public/audio-engine"
-   :devtools {:loader-mode :eval}
+   :devtools {:loader-mode :eval
+              :console-support false}
    :modules {:index {:entries [audio.engine]}}}}}
