@@ -42,3 +42,8 @@
 (defn play-a-note []
   (when (not (nil? @webview-ref))
     (.injectJavaScript @webview-ref "audio.engine.schedule_note();true")))
+
+(comment
+  
+  (play-a-note)
+  )
