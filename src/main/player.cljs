@@ -1,5 +1,6 @@
 (ns player
   (:require ["react-native-webview" :as rnwv :refer [WebView]]
+            [oops.core :refer [oget+]]
             [shadow.resource :as rc]))
 
 (defonce webview-ref (atom nil))
@@ -24,7 +25,7 @@
         parsed (js/JSON.parse data)
         logType (.-logType parsed)]
     (when (not (nil? logType))
-      (let [log-fn (goog.object/get js/console logType)]
+      (let [log-fn (oget+ js/console logType)]
         (.apply log-fn js/console (goog.object/getValues (.-args parsed)))))))
 
 (defn Player [styles]

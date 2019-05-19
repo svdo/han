@@ -1,4 +1,5 @@
-(ns audio.engine)
+(ns audio.engine
+  (:require [oops.core :refer [oset!]]))
 
 (def audioContext (atom nil))
 (def unlocked (atom false))
@@ -15,7 +16,7 @@
   (when (not @unlocked)
     (let [buffer (.createBuffer @audioContext 1 1 22050)
           node (.createBufferSource @audioContext)]
-      (goog.object/set node "buffer" buffer)
+      (oset! node :buffer buffer)
       (.start node 0)
       (reset! unlocked true))))
 
@@ -36,7 +37,7 @@
         (-> osc
             (.connect gain)
             (.connect (.-destination @audioContext)))
-        (goog.object/set (.-frequency osc) "value" 880)
+        (oset! (.-frequency osc) :value 1660)
         (.start osc time)
         (.stop osc (+ time note-length)))
       (catch js/Error e

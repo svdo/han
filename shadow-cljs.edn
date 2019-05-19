@@ -5,6 +5,7 @@
 
  :dependencies
  [[reagent "0.8.1"]
+  [binaryage/oops "0.7.0"]
   [binaryage/devtools "0.9.10"]
   [cider/cider-nrepl "0.21.0"]]
 
