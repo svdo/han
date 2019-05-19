@@ -36,6 +36,7 @@
                       :allow-universal-access-from-file-URLs true
                       :origin-whitelist ["*"]
                       :source {:html "<body style='font-size: 200%'><h1>Hi!</h1></body>"}
+                      :injected-java-script "true"
                       :on-message message-from-webview})])
 
 (defn play-a-note []
