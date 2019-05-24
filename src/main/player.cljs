@@ -44,8 +44,8 @@
                       :on-message message-from-webview})])
 
 (defn play-a-note []
-  (when (not (nil? @webview-ref))
-    (.injectJavaScript @webview-ref "audio.engine.schedule_note();true")))
+  (when (not (nil? ^js @webview-ref))
+    (.injectJavaScript ^js @webview-ref "audio.engine.schedule_note();true")))
 
 (s/def :time-signature/duration #{1 2 4 8 16 32 64})
 (s/def :time-signature/beats pos-int?)

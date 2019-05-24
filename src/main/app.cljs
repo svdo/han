@@ -41,4 +41,5 @@
   (.registerComponent AppRegistry "Han" #(r/reactify-component updatable-app-root)))
 
 (defn ^:dev/after-load reload []
-  (.forceUpdate @app-root-ref))
+  (when (not (nil? @app-root-ref))
+    (.forceUpdate ^js @app-root-ref)))
