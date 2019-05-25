@@ -15,7 +15,7 @@
   (str replace-console-log audio-engine-source ";true"))
 
 (defn inject-javascript [ref]
-  (when (and (not (nil? ref))
+  (when (and (some? ref)
              (false? @javascript-injected))
     (reset! javascript-injected true)
     (reset! webview-ref ref)
@@ -28,7 +28,7 @@
         data (.-data native-event)
         parsed (js/JSON.parse data)
         logType (.-logType parsed)]
-    (when (not (nil? logType))
+    (when-not (nil? logType)
       (let [log-fn (oget+ js/console logType)]
         (.apply log-fn js/console (goog.object/getValues (.-args parsed)))))))
 
@@ -44,7 +44,7 @@
                       :on-message message-from-webview})])
 
 (defn play-a-note []
-  (when (not (nil? ^js @webview-ref))
+  (when (some? ^js @webview-ref)
     (.injectJavaScript ^js @webview-ref "audio.engine.schedule_note();true")))
 
 (s/def :time-signature/duration #{1 2 4 8 16 32 64})
