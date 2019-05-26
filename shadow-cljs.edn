@@ -23,4 +23,11 @@
    :output-dir "public/audio-engine"
    :devtools {:loader-mode :eval
               :console-support false}
-   :modules {:index {:entries [audio.engine]}}}}}
+   :modules {:index {:entries [audio.engine]}}}
+  
+  :test
+  {:target :node-test
+   :output-to "build/test.js"
+   :ns-regexp "-test$"
+   :autorun   true
+   :compiler-options {:reader-features #{:test}}}}}

@@ -9,7 +9,7 @@
     "ios": "react-native run-ios",
     "server": "shadow-cljs server",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
+    "test": "shadow-cljs watch :test",
     "watch": "set -x;shadow-cljs watch --config-merge \"{:local-ip \\\"$(ipconfig getifaddr en0)\\\"}\" :han :player"
   },
   "dependencies": {
