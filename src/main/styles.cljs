@@ -21,6 +21,11 @@
     :color "#333333"
     :margin-bottom 5}
 
+   :staff
+   {:flex 0
+    :background-color "white"
+    :height 132}
+
    :player
    {:position "absolute"
     :flex 0

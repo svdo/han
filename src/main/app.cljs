@@ -3,6 +3,7 @@
             [reagent.core :as r :refer [atom]]
             ["react-native" :as rn :refer [AppRegistry, Platform]]
             [player :refer [Player]]
+            [staff :refer [Staff]]
             [styles :refer [styles]]))
 
 (devtools/set-pref! :disable-advanced-mode-check true)
@@ -20,7 +21,8 @@
     [:> rn/Text {:style (:instructions styles)} "To get started, edit app.cljs"]
     [:> rn/Text {:style (:instructions styles)} instructions]
     [:> rn/Button {:title "Play a note"
-                   :on-press player/play-a-note}]]
+                   :on-press player/play-a-note}]
+    [Staff {:style (:staff styles)}]]
    [:> rn/View
     [Player {:style (:player styles)}]]])
 
