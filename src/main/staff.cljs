@@ -1,5 +1,6 @@
 (ns staff
   (:require ["react-native" :as rn]
+            ["react-native-view-overflow" :default ViewOverflow]
             [reagent.core :as r]))
 
 (defonce staff-img (js/require "../img/staff.png"))
@@ -8,15 +9,15 @@
 (defn cell [details]
   (let [item (details "item")
         key (item "key")]
-    [:> rn/View {:style {:width 80
-                         :background-color (if (= 0 (mod key 2)) "#dd666611" "#ffffff33")}}
+    [:> ViewOverflow {:style {:width 80
+                              :background-color (if (= 0 (mod key 2)) "#dd666611" "#ffffff33")}}
      [:> rn/Text {:style {:left -15 :width 30 :text-align "center"}} key]]))
 
 (defn separator []
   [:> rn/View {:style {:width 1}}
    [:> rn/ImageBackground {:source measure-separator
                            :resize-mode "center"
-                           :style {:width 1 :height 66}}]])
+                           :style {:width 3 :height 66}}]])
 
 (defn Staff [styles]
   [:> rn/View styles
@@ -26,5 +27,6 @@
     [:> rn/FlatList
      {:data (clj->js (mapv (fn [n] {:key n}) (range 0 100)))
       :horizontal true
+      :Cell-renderer-component ViewOverflow
       :Item-separator-component #(r/as-element [separator])
       :render-item (fn [details] (r/as-element [cell (js->clj details)]))}]]])
