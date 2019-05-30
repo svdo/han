@@ -17,7 +17,10 @@
      [:> rn/ImageBackground {:source staff-img
                              :resize-mode "stretch"
                              :style {:width "100%" :height 66}}
-      [:> rn/Text {:style (:measure-number styles)} num]]]))
+      [:> rn/Text {:style (:measure-number styles)} num]
+      [:> rn/View {:style (:measure-contents styles)}
+       [:> rn/Text {:style (:time-signature styles)} "3"]
+       [:> rn/Text {:style (:time-signature styles)} "4"]]]]))
 
 (defn staff-component [width bg-image]
   [:> rn/View {:style {:width width}}

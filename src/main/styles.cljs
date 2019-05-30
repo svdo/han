@@ -1,4 +1,10 @@
-(ns styles)
+(ns styles
+  (:require ["react-native" :as rn :refer [Platform]]))
+
+(def serif-font
+  (.select Platform
+           #js {:ios "Times New Roman"
+                :android "serif"}))
 
 (def styles
   {:approot
@@ -34,9 +40,25 @@
     :width 0}
 
    :measure-number
-   {:left -15
+   {:position "absolute"
+    :left -15
     :width 30
     :top 15
-    :font-family "Times New Roman"
-    :text-align "center"}})
+    :font-family serif-font
+    :text-align "center"}
+
+   :measure-contents
+   {:margin-top 32
+    :height 32
+    :display "flex"
+    :align-items "center"
+    :flex-direction "column"
+    :justify-content "space-around"}
+
+   :time-signature
+   {:margin-top -4
+    :margin-bottom -4
+    :font-family serif-font
+    :font-size 18
+    :font-weight "bold"}})
 
