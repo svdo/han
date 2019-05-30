@@ -8,10 +8,11 @@
 
 (defn cell [details]
   (let [item (details "item")
-        key (item "key")]
+        key (item "key")
+        num (item "measure-number")]
     [:> ViewOverflow {:style {:width 80
-                              :background-color (if (= 0 (mod key 2)) "#dd666611" "#ffffff33")}}
-     [:> rn/Text {:style {:left -15 :width 30 :text-align "center"}} key]]))
+                              :background-color (if (= 0 (mod num 2)) "#dd666611" "#ffffff33")}}
+     [:> rn/Text {:style {:left -15 :width 30 :text-align "center"}} num]]))
 
 (defn separator []
   [:> rn/View {:style {:width 1}}
@@ -25,7 +26,7 @@
                            :resize-mode "stretch"
                            :style {:width "100%" :height 66}}
     [:> rn/FlatList
-     {:data (clj->js (mapv (fn [n] {:key n}) (range 0 100)))
+     {:data (clj->js (mapv (fn [n] {:key (str n) :measure-number n}) (range 1 100)))
       :horizontal true
       :Cell-renderer-component ViewOverflow
       :Item-separator-component #(r/as-element [separator])
