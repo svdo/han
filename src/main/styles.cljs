@@ -31,5 +31,12 @@
     :flex 0
     :top 0
     :height 0
-    :width 0}})
+    :width 0}
+
+   :measure-number
+   {:left -15
+    :width 30
+    :top 15
+    :font-family "Times New Roman"
+    :text-align "center"}})
 

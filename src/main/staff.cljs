@@ -1,7 +1,8 @@
 (ns staff
   (:require ["react-native" :as rn]
             ["react-native-view-overflow" :default ViewOverflow]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [styles :refer [styles]]))
 
 (defonce staff-img (js/require "../img/staff.png"))
 (defonce measure-separator (js/require "../img/separator.png"))
@@ -11,12 +12,12 @@
 (defn cell [details]
   (let [item (details "item")
         num (item "measure-number")]
-    [:> ViewOverflow {:style {:width 80
+    [:> ViewOverflow {:style {:width 68
                               :background-color (if (= 0 (mod num 2)) "#dd666611" "#ffffff33")}}
      [:> rn/ImageBackground {:source staff-img
                              :resize-mode "stretch"
                              :style {:width "100%" :height 66}}
-      [:> rn/Text {:style {:left -15 :width 30 :text-align "center"}} num]]]))
+      [:> rn/Text {:style (:measure-number styles)} num]]]))
 
 (defn staff-component [width bg-image]
   [:> rn/View {:style {:width width}}
