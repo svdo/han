@@ -9,6 +9,10 @@
 (defonce staff-header (js/require "../img/staff-header.png"))
 (defonce staff-footer (js/require "../img/staff-end.png"))
 
+(defn show-measure-num? [num]
+  (or (= 1 num)
+      (= 0 (mod num 5))))
+
 (defn cell [details]
   (let [item (details "item")
         num (item "measure-number")]
@@ -16,7 +20,7 @@
      [:> rn/ImageBackground {:source staff-img
                              :resize-mode "stretch"
                              :style {:width "100%" :height 66}}
-      [:> rn/Text {:style (:measure-number styles)} num]
+      (if (show-measure-num? num) [:> rn/Text {:style (:measure-number styles)} num])
       [:> rn/View {:style (:measure-contents styles)}
        [:> rn/Text {:style (:time-signature styles)} "3"]
        [:> rn/Text {:style (:time-signature styles)} "4"]]]]))
