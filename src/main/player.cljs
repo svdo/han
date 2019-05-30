@@ -4,6 +4,7 @@
             [clojure.spec.alpha :as s]
             [clojure.test.check.generators]
             [cljs.spec.gen.alpha :as gen]
+            [cljs.spec.test.alpha :as stest]
             [shadow.resource :as rc]))
 
 (defonce webview-ref (atom nil))
@@ -51,7 +52,7 @@
 (s/def :time-signature/beats pos-int?)
 (s/def :measure/time-signature (s/tuple :time-signature/beats :time-signature/duration))
 
-(def note-lengths #{:dotted-whole :whole  
+(def note-lengths #{:dotted-whole :whole
                     :dotted-half :half
                     :dotted-quarter :quarter
                     :dotted-eighth :eighth
@@ -70,15 +71,54 @@
 (comment
   (in-ns 'player)
   (play-a-note)
-  
+
   (gen/sample (s/gen :measure/time-signature))
   (gen/sample (s/gen :measure/accents))
   (gen/sample (s/gen :piece/measure))
-  
-  (def sample-measure {:time-signature/beats 3
-                       :time-signature/duration 8
-                       })
+
+  (do
+    (def sample-measure-1 {:time-signature/beats 3
+                           :time-signature/duration 8})
+    (def sample-measure-2 {:measure/accents [0 0]
+                           :time-signature/beats 2
+                           :time-signature/duration 4})
+    (def sample-measure-3 {:measure/accents [1 0 0 1 0 1 0]
+                           :time-signature/beats 7
+                           :time-signature/duration 8})
+    (def piece [sample-measure-1 sample-measure-2 sample-measure-3])
+
+    (defn str-accent [accent]
+      (if (= 1 accent) "o" "."))
+
+    (defn str-measure [measure]
+      "creates a printable version of the measure"
+      (let [beats (:time-signature/beats measure)
+            accents (:measure/accents measure)]
+        (str (str beats
+                  "/"
+                  (:time-signature/duration measure))
+             " "
+             (str "O"
+                  (if (some? accents)
+                    (reduce str (map str-accent (rest accents)))
+                    (reduce str (repeat (dec beats) ".")))))))
+
+    (s/fdef str-measure
+      :args (s/cat :measure :piece/measure)
+      :ret string?)
+
+    (defn str-piece [measures]
+      (reduce str (interpose "|" (map str-measure measures)))))
+
   (s/conform :piece/measure sample-measure)
   (s/explain :piece/measure sample-measure)
-  
+
+  (stest/instrument `str-measure)
+
+  (str-measure sample-measure-3)
+  (str-measure {:time-signature/beats 3})
+
+  (str-piece piece)
+
+  ;
   )
