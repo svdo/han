@@ -10,7 +10,6 @@
 
 (defn cell [details]
   (let [item (details "item")
-        key (item "key")
         num (item "measure-number")]
     [:> ViewOverflow {:style {:width 80
                               :background-color (if (= 0 (mod num 2)) "#dd666611" "#ffffff33")}}
