@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "devtools": "react-devtools",
     "emu": "emulator -avd Nexus_5X_API_28_x86 &",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator=\"iPhone X (12.2)\"",
     "server": "shadow-cljs server",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "shadow-cljs watch :test",
