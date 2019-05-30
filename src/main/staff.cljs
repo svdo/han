@@ -16,23 +16,15 @@
                               :background-color (if (= 0 (mod num 2)) "#dd666611" "#ffffff33")}}
      [:> rn/Text {:style {:left -15 :width 30 :text-align "center"}} num]]))
 
-(defn header []
-  [:> rn/View {:style {:width 15}}
-   [:> rn/ImageBackground {:source staff-header
+(defn staff-component [width bg-image]
+  [:> rn/View {:style {:width width}}
+   [:> rn/ImageBackground {:source bg-image
                            :resize-mode "center"
-                           :style {:width 15 :height 66}}]])
+                           :style {:width width :height 66}}]])
 
-(defn separator []
-  [:> rn/View {:style {:width 1}}
-   [:> rn/ImageBackground {:source measure-separator
-                           :resize-mode "center"
-                           :style {:width 3 :height 66}}]])
-
-(defn footer []
-  [:> rn/View {:style {:width 20}}
-   [:> rn/ImageBackground {:source staff-footer
-                           :resize-mode "center"
-                           :style {:width 20 :height 66}}]])
+(defn header [] (staff-component 15 staff-header))
+(defn separator [] (staff-component 1 measure-separator))
+(defn footer [] (staff-component 20 staff-footer))
 
 (defn Staff [styles]
   [:> rn/View styles
