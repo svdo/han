@@ -12,8 +12,7 @@
 (defn cell [details]
   (let [item (details "item")
         num (item "measure-number")]
-    [:> ViewOverflow {:style {:width 68
-                              :background-color (if (= 0 (mod num 2)) "#dd666611" "#ffffff33")}}
+    [:> ViewOverflow {:style {:width 68}}
      [:> rn/ImageBackground {:source staff-img
                              :resize-mode "stretch"
                              :style {:width "100%" :height 66}}
@@ -28,9 +27,9 @@
                            :resize-mode "center"
                            :style {:width width :height 66}}]])
 
-(defn header [] (staff-component 15 staff-header))
+(defn header    [] (staff-component 15 staff-header))
 (defn separator [] (staff-component 1 measure-separator))
-(defn footer [] (staff-component 20 staff-footer))
+(defn footer    [] (staff-component 20 staff-footer))
 
 (defn Staff [styles]
   [:> rn/View styles

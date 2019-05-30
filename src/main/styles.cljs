@@ -30,7 +30,7 @@
    :staff
    {:flex 0
     :background-color "white"
-    :height 132}
+    :height 90}
 
    :player
    {:position "absolute"
