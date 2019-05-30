@@ -6,6 +6,7 @@
 (defonce staff-img (js/require "../img/staff.png"))
 (defonce measure-separator (js/require "../img/separator.png"))
 (defonce staff-header (js/require "../img/staff-header.png"))
+(defonce staff-footer (js/require "../img/staff-end.png"))
 
 (defn cell [details]
   (let [item (details "item")
@@ -27,6 +28,12 @@
                            :resize-mode "center"
                            :style {:width 3 :height 66}}]])
 
+(defn footer []
+  [:> rn/View {:style {:width 20}}
+   [:> rn/ImageBackground {:source staff-footer
+                           :resize-mode "center"
+                           :style {:width 20 :height 66}}]])
+
 (defn Staff [styles]
   [:> rn/View styles
    [:> rn/ImageBackground {:source staff-img
@@ -37,5 +44,6 @@
       :horizontal true
       :Cell-renderer-component ViewOverflow
       :List-header-component #(r/as-element [header])
+      :List-footer-component #(r/as-element [footer])
       :Item-separator-component #(r/as-element [separator])
       :render-item (fn [details] (r/as-element [cell (js->clj details)]))}]]])
