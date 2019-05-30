@@ -13,7 +13,10 @@
         num (item "measure-number")]
     [:> ViewOverflow {:style {:width 80
                               :background-color (if (= 0 (mod num 2)) "#dd666611" "#ffffff33")}}
-     [:> rn/Text {:style {:left -15 :width 30 :text-align "center"}} num]]))
+     [:> rn/ImageBackground {:source staff-img
+                             :resize-mode "stretch"
+                             :style {:width "100%" :height 66}}
+      [:> rn/Text {:style {:left -15 :width 30 :text-align "center"}} num]]]))
 
 (defn staff-component [width bg-image]
   [:> rn/View {:style {:width width}}
@@ -27,14 +30,11 @@
 
 (defn Staff [styles]
   [:> rn/View styles
-   [:> rn/ImageBackground {:source staff-img
-                           :resize-mode "stretch"
-                           :style {:width "100%" :height 66}}
-    [:> rn/FlatList
-     {:data (clj->js (mapv (fn [n] {:key (str n) :measure-number n}) (range 1 11)))
-      :horizontal true
-      :Cell-renderer-component ViewOverflow
-      :List-header-component #(r/as-element [header])
-      :List-footer-component #(r/as-element [footer])
-      :Item-separator-component #(r/as-element [separator])
-      :render-item (fn [details] (r/as-element [cell (js->clj details)]))}]]])
+   [:> rn/FlatList
+    {:data (clj->js (mapv (fn [n] {:key (str n) :measure-number n}) (range 1 11)))
+     :horizontal true
+     :Cell-renderer-component ViewOverflow
+     :List-header-component #(r/as-element [header])
+     :List-footer-component #(r/as-element [footer])
+     :Item-separator-component #(r/as-element [separator])
+     :render-item (fn [details] (r/as-element [cell (js->clj details)]))}]])
