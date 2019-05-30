@@ -41,7 +41,9 @@
         (.start osc time)
         (.stop osc (+ time note-length)))
       (catch js/Error e
-        (js/console.exception e)))))
+        (js/console.error #js {:error e
+                               :message (.-message e)
+                               :stack (.-stack e)})))))
 
 (init)
 (schedule-note)
