@@ -2,9 +2,6 @@
   (:require ["react-native-webview" :as rnwv :refer [WebView]]
             [oops.core :refer [oget+]]
             [clojure.spec.alpha :as s]
-            [clojure.test.check.generators]
-            [cljs.spec.gen.alpha :as gen]
-            [cljs.spec.test.alpha :as stest]
             [shadow.resource :as rc]))
 
 (defonce webview-ref (atom nil))
@@ -77,6 +74,9 @@
   (gen/sample (s/gen :piece/measure))
 
   (do
+    (require '[clojure.test.check.generators])
+    (require '[cljs.spec.gen.alpha :as gen])
+    (require '[cljs.spec.test.alpha :as stest])
     (def sample-measure-1 {:time-signature/beats 3
                            :time-signature/duration 8})
     (def sample-measure-2 {:measure/accents [0 0]
