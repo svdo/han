@@ -74,6 +74,8 @@
   (gen/sample (s/gen :piece/measure))
 
   (do
+    (require '[clojure.test.check])
+    (require '[clojure.test.check.properties])
     (require '[clojure.test.check.generators])
     (require '[cljs.spec.gen.alpha :as gen])
     (require '[cljs.spec.test.alpha :as stest])
@@ -117,6 +119,7 @@
 
   (str-measure sample-measure-3)
   (str-measure {:time-signature/beats 3})
+  (stest/check `str-measure)
 
   (str-piece piece)
 
