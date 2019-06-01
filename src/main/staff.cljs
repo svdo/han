@@ -33,7 +33,7 @@
 
 (defn header    [] (staff-component 15 staff-header))
 (defn separator [] (staff-component 1 measure-separator))
-(defn footer    [] (staff-component 20 staff-footer))
+(defn footer    [] (staff-component 11 staff-footer))
 
 (defn Staff [styles]
   [:> rn/View styles
