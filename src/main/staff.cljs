@@ -2,12 +2,8 @@
   (:require ["react-native" :as rn]
             ["react-native-view-overflow" :default ViewOverflow]
             [reagent.core :as r]
-            [styles :refer [styles]]))
-
-(defonce staff-img         {:img (js/require "../img/staff.png")        :width 10})
-(defonce measure-separator {:img (js/require "../img/separator.png")    :width  1})
-(defonce staff-header      {:img (js/require "../img/staff-header.png") :width 15})
-(defonce staff-footer      {:img (js/require "../img/staff-end.png")    :width 11})
+            [styles :refer [styles]]
+            [images :refer [images]]))
 
 (defn show-measure-num? [num]
   (or (= 1 num)
@@ -17,7 +13,7 @@
   (let [item (details "item")
         num (item "measure-number")]
     [:> ViewOverflow {:style {:width 68}}
-     [:> rn/ImageBackground {:source (:img staff-img)
+     [:> rn/ImageBackground {:source (:img (:staff/bar images))
                              :resize-mode "stretch"
                              :style {:width "100%" :height 66}}
       (if (show-measure-num? num) [:> rn/Text {:style (:measure-number styles)} num])
@@ -32,9 +28,9 @@
                              :resize-mode "center"
                              :style {:width width :height 66}}]]))
 
-(defn header    [] (staff-component staff-header))
-(defn separator [] (staff-component measure-separator))
-(defn footer    [] (staff-component staff-footer))
+(defn header    [] (staff-component (:staff/start images)))
+(defn separator [] (staff-component (:staff/measure-separator images)))
+(defn footer    [] (staff-component (:staff/end images)))
 
 (defn Staff [styles]
   [:> rn/View styles
