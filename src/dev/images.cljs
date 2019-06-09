@@ -1,10 +1,11 @@
 (ns images)
 
 (def images
-  {:staff/bar               {:img (js/require "../img/staff.png")        :width 10 :height 66}
-   :staff/measure-separator {:img (js/require "../img/separator.png")    :width  1 :height 66}
-   :staff/start             {:img (js/require "../img/staff-header.png") :width 15 :height 66}
-   :staff/end               {:img (js/require "../img/staff-end.png")    :width 11 :height 66}
+  {:staff/bar               {:img (js/require "../img/staff.png")               :width 10 :height 66}
+   :staff/measure-separator {:img (js/require "../img/separator.png")           :width  1 :height 66}
+   :staff/double-separator  {:img (js/require "../img/double-separator.png")    :width  3 :height 66}
+   :staff/start             {:img (js/require "../img/staff-header.png")        :width 15 :height 66}
+   :staff/end               {:img (js/require "../img/staff-end.png")           :width 11 :height 66}
 
    :note/whole              {:img (js/require "../img/notes/whole.png")         :width 18 :height 29}
    :note/dotted-whole       {:img (js/require "../img/notes/whole-dot.png")     :width 18 :height 29}
