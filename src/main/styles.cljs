@@ -47,18 +47,16 @@
     :font-family serif-font
     :text-align "center"}
 
-   :measure-contents
-   {:margin-top 32
-    :height 32
-    :display "flex"
-    :align-items "center"
-    :flex-direction "column"
-    :justify-content "space-around"}
+  ;  :measure-contents
+  ;  {:margin-top 32
+  ;   :height 32
+  ;   :display "flex"
+  ;   :align-items "center"
+  ;   :flex-direction "column"
+  ;   :justify-content "space-around"}
 
    :time-signature
-   {:margin-top -4
-    :margin-bottom -4
-    :font-family serif-font
+   {:font-family serif-font
     :font-size 18
     :font-weight "bold"}})
 
