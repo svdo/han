@@ -17,6 +17,7 @@
     "react-devtools": "^3.6.1",
     "react-dom": "^16.8.6",
     "react-native": "0.59.5",
+    "react-native-svg": "^9.5.1",
     "react-native-view-overflow": "^0.0.4",
     "react-native-webview": "^5.8.1"
   },
