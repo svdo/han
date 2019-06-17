@@ -2,8 +2,9 @@
   (:require ["react-native" :as rn]
             ["react-native-view-overflow" :default ViewOverflow]
             [reagent.core :as r]
-            [styles :refer [styles]]
-            [images :refer [images]]))
+            [styles :refer (styles)]
+            [images :refer (images)]
+            ["react-native-svg" :refer (Line Rect) :default Svg]))
 
 (defn show-measure-num? [num]
   (or (= 1 num)
@@ -11,50 +12,59 @@
 
 (def show-double-bar? show-measure-num?) ;; todo temporary
 
+(defn bar-lines [width]
+  (take 5 (map (fn [y] ^{:key (str y)}
+                 [:> Line {:x1 0.5 :y1 y :x2 (+ 0.5 (dec width)) :y2 y
+                           :stroke-width 1 :stroke "black"
+                           :stroke-linecap "square"}])
+               (iterate (partial + 8) 0.5))))
+
 (defn cell [details]
   (let [item (details "item")
         num (item "measureNumber")]
-    [:> ViewOverflow {:style {:width 68}}
-     [:> rn/ImageBackground {:source (:img (:staff/bar images))
-                             :resize-mode "repeat"
-                             :style {:width "100%" :height 66}}
-      ; [:> rn/View {:style {:display "flex" :justify-content "flex-start"}}
-      ;    [:> rn/Image {:source (:img (:note/dotted-sixteenth images))
-      ;                  :style {:display "flex"
-      ;                          :tint-color "black"
-      ;                          :width (:width (:note/dotted-sixteenth images))
-      ;                          :height (:height (:note/dotted-sixteenth images))}}]
-      ;    [:> rn/Text "= 128"]]
-      ; (if (show-measure-num? num) [:> rn/Text {:style (:measure-number styles)} num])
-      ; [:> rn/View {:style (:measure-contents styles)}
-      ;  [:> rn/Text {:style (:time-signature styles)} "3"]
-      ;  [:> rn/Text {:style (:time-signature styles)} "4"]]
-      [:> rn/View {:style {:flex-direction "column"}}
-       [:> rn/View {:style {:background-color "#ff000033" :height 32}}
-        (if (show-measure-num? num)
-          [:> rn/Text {:style {:position "absolute" :bottom 0 :width 32 :left -16 :text-align "center"}} num])]
-       [:> rn/View {:style {:background-color "#00ff0033" :height 33 :align-items "center" :justify-content "space-around"}}
-        [:> rn/Text {:numberOfLines 1 :ellipsizeMode "tail" :style (merge {:width 68} (:time-signature styles))} "2+2+3+2+2"]
-        [:> rn/Text {:style (:time-signature styles)} "8"]]]]]))
+    [:> ViewOverflow {:style {:width 68 :height 65}}
+     [:> Svg {:height 34 :width 68 :view-box "0 0 68 33"
+              :style {:position "absolute" :bottom 0}}
+      (bar-lines 68)]]))
 
-(defn staff-component [image]
-  (let [width (:width image)]
-    [:> rn/View {:style {:width width}}
-     [:> rn/ImageBackground {:source (:img image)
-                             :resize-mode "center"
-                             :style {:width width :height 66}}]]))
+(defn single-line-separator []
+  [:> ViewOverflow {:style {:width 1 :height 65}}
+   [:> Svg {:height 34 :width 1 :view-box "0 0 1 33"
+            :style {:position "absolute" :bottom 0}}
+    [:> Line {:x1 0.5 :y1 0.5 :x2 0.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]]])
 
-(defn header    [] (staff-component (:staff/start images)))
+(defn double-line-separator []
+  [:> ViewOverflow {:style {:width 3 :height 65}}
+   [:> Svg {:height 34 :width 3 :view-box "0 0 3 33"
+            :style {:position "absolute" :bottom 0}}
+    [:> Line {:x1 0.5 :y1 0.5 :x2 0.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]
+    [:> Line {:x1 2.5 :y1 0.5 :x2 2.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]
+    (bar-lines 3)]])
+
 (defn separator [props]
   (if (show-double-bar? (.-measureNumber (.-leadingItem props)))
-    (staff-component (:staff/double-separator images))
-    (staff-component (:staff/measure-separator images))))
-(defn footer    [] (staff-component (:staff/end images)))
+    (double-line-separator)
+    (single-line-separator)))
+
+(defn header []
+  [:> rn/View {:style {:width 15 :height 65}}
+   [:> Svg {:height 34 :width 15 :view-box "0 0 15 33"
+            :style {:position "absolute" :bottom 0}}
+    (bar-lines 15)
+    [:> Line {:x1 14.5 :y1 0.5 :x2 14.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]]])
+
+(defn footer []
+  [:> rn/View {:style {:width 11 :height 65}}
+   [:> Svg {:height 34 :width 11 :view-box "0 0 11 33"
+            :style {:position "absolute" :bottom 0}}
+    [:> Line {:x1 0.5 :y1 0.5 :x2 0.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]
+    [:> Line {:x1 4.5 :y1 1.5 :x2 4.5 :y2 31.5 :stroke-linecap "square" :stroke-width 3 :stroke "black"}]
+    (bar-lines 3)]])
 
 (defn Staff [styles]
   [:> rn/View styles
    [:> rn/FlatList
-    {:data (clj->js (mapv (fn [n] {:key (str n) :measureNumber n}) (range 1 11)))
+    {:data (clj->js (mapv (fn [n] {:key (str n) :measureNumber n}) (range 1 4)))
      :horizontal true
      :Cell-renderer-component ViewOverflow
      :List-header-component #(r/as-element [header])
