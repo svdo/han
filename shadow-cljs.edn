@@ -8,7 +8,7 @@
   [binaryage/oops "0.7.0"]
   [binaryage/devtools "0.9.10"]
   [org.clojure/test.check "0.9.0"]
-  [cider/cider-nrepl "0.21.0"]]
+  [cider/cider-nrepl "0.21.1"]]
 
  :builds
  {:han
@@ -24,7 +24,7 @@
    :devtools {:loader-mode :eval
               :console-support false}
    :modules {:index {:entries [audio.engine]}}}
-  
+
   :test
   {:target :node-test
    :output-to "build/test.js"
