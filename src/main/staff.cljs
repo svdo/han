@@ -23,23 +23,23 @@
   (let [item (details "item")
         num (item "measureNumber")]
     [:> ViewOverflow {:style {:width 68 :height 65}}
-     [:> Svg {:height 34 :width 68 :view-box "0 0 68 33"
-              :style {:position "absolute" :bottom 0}}
-      (bar-lines 68)]]))
+     [:> rn/View {:style {:margin-top 32 :width 68 :height 33 :display "flex" :flex-direction "column"}}
+      [:> rn/View {:style {:width 68 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+      [:> rn/View {:style {:width 68 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+      [:> rn/View {:style {:width 68 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+      [:> rn/View {:style {:width 68 :height 9 :background-color "white" :border-top-width 1 :border-top-color "black" :border-bottom-width 1 :border-bottom-color "black"}}]]]))
 
 (defn single-line-separator []
   [:> ViewOverflow {:style {:width 1 :height 65}}
-   [:> Svg {:height 34 :width 1 :view-box "0 0 1 33"
-            :style {:position "absolute" :bottom 0}}
-    [:> Line {:x1 0.5 :y1 0.5 :x2 0.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]]])
+   [:> rn/View {:style {:margin-top 32 :width 1 :height 33 :border-left-width 1 :border-left-color "black"}}]])
 
 (defn double-line-separator []
   [:> ViewOverflow {:style {:width 3 :height 65}}
-   [:> Svg {:height 34 :width 3 :view-box "0 0 3 33"
-            :style {:position "absolute" :bottom 0}}
-    [:> Line {:x1 0.5 :y1 0.5 :x2 0.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]
-    [:> Line {:x1 2.5 :y1 0.5 :x2 2.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]
-    (bar-lines 3)]])
+   [:> rn/View {:style {:margin-top 32 :width 3 :height 33 :background-color "black"}}
+    [:> rn/View {:style {:margin-left 1 :width 1 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+    [:> rn/View {:style {:margin-left 1 :width 1 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+    [:> rn/View {:style {:margin-left 1 :width 1 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+    [:> rn/View {:style {:margin-left 1 :width 1 :height 9 :background-color "white" :border-top-width 1 :border-top-color "black" :border-bottom-width 1 :border-bottom-color "black"}}]]])
 
 (defn separator [props]
   (if (show-double-bar? (.-measureNumber (.-leadingItem props)))
@@ -47,19 +47,20 @@
     (single-line-separator)))
 
 (defn header []
-  [:> rn/View {:style {:width 15 :height 65}}
-   [:> Svg {:height 34 :width 15 :view-box "0 0 15 33"
-            :style {:position "absolute" :bottom 0}}
-    (bar-lines 15)
-    [:> Line {:x1 14.5 :y1 0.5 :x2 14.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]]])
+  [:> rn/View {:style {:width 12 :height 65}}
+   [:> rn/View {:style {:margin-top 32 :width 12 :height 33 :border-right-width 1 :border-right-color "black"}}
+    [:> rn/View {:style {:width 11 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+    [:> rn/View {:style {:width 11 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+    [:> rn/View {:style {:width 11 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+    [:> rn/View {:style {:width 11 :height 9 :background-color "white" :border-top-width 1 :border-top-color "black" :border-bottom-width 1 :border-bottom-color "black"}}]]])
 
 (defn footer []
   [:> rn/View {:style {:width 11 :height 65}}
-   [:> Svg {:height 34 :width 11 :view-box "0 0 11 33"
-            :style {:position "absolute" :bottom 0}}
-    [:> Line {:x1 0.5 :y1 0.5 :x2 0.5 :y2 32.5 :stroke-linecap "square" :stroke-width 1 :stroke "black"}]
-    [:> Line {:x1 4.5 :y1 1.5 :x2 4.5 :y2 31.5 :stroke-linecap "square" :stroke-width 3 :stroke "black"}]
-    (bar-lines 3)]])
+   [:> rn/View {:style {:margin-top 32 :width 6 :height 33 :background-color "black"}}
+    [:> rn/View {:style {:margin-left 1 :width 2 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+    [:> rn/View {:style {:margin-left 1 :width 2 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+    [:> rn/View {:style {:margin-left 1 :width 2 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
+    [:> rn/View {:style {:margin-left 1 :width 2 :height 9 :background-color "white" :border-top-width 1 :border-top-color "black" :border-bottom-width 1 :border-bottom-color "black"}}]]])
 
 (defn Staff [styles]
   [:> rn/View styles
