@@ -43,7 +43,7 @@
    {:position "absolute"
     :left -15
     :width 30
-    :top 15
+    :bottom 0
     :font-family serif-font
     :text-align "center"}
 

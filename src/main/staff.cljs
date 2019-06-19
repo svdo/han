@@ -25,8 +25,13 @@
   (let [item (details "item")
         num (item "measureNumber")]
     [:> ViewOverflow {:style {:width 68 :height 65}}
-     [:> rn/View {:style {:margin-top 32 :width 68 :height 33 :display "flex" :flex-direction "column"}}
-      (bar-lines 68 0)]]))
+     [:> rn/View {:style {:position "absolute" :top 0 :width 68 :height 32}}
+      [:> rn/Text {:style (:measure-number styles)} num]]
+     [:> rn/View {:style {:position "absolute" :top 32 :width 68 :height 33 :display "flex" :flex-direction "column"}}
+      (bar-lines 68 0)]
+     [:> rn/View {:style {:position "absolute" :top 32 :width 68 :height 33 :display "flex" :flex-direction "column" :justify-content "space-around" :align-items "center"}}
+      [:> rn/Text {:style (:time-signature styles)} "3"]
+      [:> rn/Text {:style (:time-signature styles)} "4"]]]))
 
 (defn single-line-separator []
   [:> ViewOverflow {:style {:width 1 :height 65}}
