@@ -2,9 +2,7 @@
   (:require ["react-native" :as rn]
             ["react-native-view-overflow" :default ViewOverflow]
             [reagent.core :as r]
-            [styles :refer (styles)]
-            [images :refer (images)]
-            ["react-native-svg" :refer (Line Rect) :default Svg]))
+            [styles :refer (styles)]))
 
 (defn show-measure-num? [num]
   (or (= 1 num)
