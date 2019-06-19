@@ -12,22 +12,21 @@
 
 (def show-double-bar? show-measure-num?) ;; todo temporary
 
-(defn bar-lines [width]
-  (take 5 (map (fn [y] ^{:key (str y)}
-                 [:> Line {:x1 0.5 :y1 y :x2 (+ 0.5 (dec width)) :y2 y
-                           :stroke-width 1 :stroke "black"
-                           :stroke-linecap "square"}])
-               (iterate (partial + 8) 0.5))))
+(defn bar-lines [width margin-left]
+  (map (fn [i] ^{:key (str i)} [:> rn/View {:style {:margin-left margin-left
+                                                    :width width
+                                                    :height (if (= i 5) 9 8)
+                                                    :background-color "white"
+                                                    :border-top-width 1
+                                                    :border-top-color "black"}}])
+       (range 1 6)))
 
 (defn cell [details]
   (let [item (details "item")
         num (item "measureNumber")]
     [:> ViewOverflow {:style {:width 68 :height 65}}
      [:> rn/View {:style {:margin-top 32 :width 68 :height 33 :display "flex" :flex-direction "column"}}
-      [:> rn/View {:style {:width 68 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-      [:> rn/View {:style {:width 68 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-      [:> rn/View {:style {:width 68 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-      [:> rn/View {:style {:width 68 :height 9 :background-color "white" :border-top-width 1 :border-top-color "black" :border-bottom-width 1 :border-bottom-color "black"}}]]]))
+      (bar-lines 68 0)]]))
 
 (defn single-line-separator []
   [:> ViewOverflow {:style {:width 1 :height 65}}
@@ -36,10 +35,7 @@
 (defn double-line-separator []
   [:> ViewOverflow {:style {:width 3 :height 65}}
    [:> rn/View {:style {:margin-top 32 :width 3 :height 33 :background-color "black"}}
-    [:> rn/View {:style {:margin-left 1 :width 1 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-    [:> rn/View {:style {:margin-left 1 :width 1 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-    [:> rn/View {:style {:margin-left 1 :width 1 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-    [:> rn/View {:style {:margin-left 1 :width 1 :height 9 :background-color "white" :border-top-width 1 :border-top-color "black" :border-bottom-width 1 :border-bottom-color "black"}}]]])
+    (bar-lines 1 1)]])
 
 (defn separator [props]
   (if (show-double-bar? (.-measureNumber (.-leadingItem props)))
@@ -49,18 +45,12 @@
 (defn header []
   [:> rn/View {:style {:width 12 :height 65}}
    [:> rn/View {:style {:margin-top 32 :width 12 :height 33 :border-right-width 1 :border-right-color "black"}}
-    [:> rn/View {:style {:width 11 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-    [:> rn/View {:style {:width 11 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-    [:> rn/View {:style {:width 11 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-    [:> rn/View {:style {:width 11 :height 9 :background-color "white" :border-top-width 1 :border-top-color "black" :border-bottom-width 1 :border-bottom-color "black"}}]]])
+    (bar-lines 11 0)]])
 
 (defn footer []
   [:> rn/View {:style {:width 11 :height 65}}
    [:> rn/View {:style {:margin-top 32 :width 6 :height 33 :background-color "black"}}
-    [:> rn/View {:style {:margin-left 1 :width 2 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-    [:> rn/View {:style {:margin-left 1 :width 2 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-    [:> rn/View {:style {:margin-left 1 :width 2 :height 8 :background-color "white" :border-top-width 1 :border-top-color "black"}}]
-    [:> rn/View {:style {:margin-left 1 :width 2 :height 9 :background-color "white" :border-top-width 1 :border-top-color "black" :border-bottom-width 1 :border-bottom-color "black"}}]]])
+    (bar-lines 2 1)]])
 
 (defn Staff [styles]
   [:> rn/View styles
