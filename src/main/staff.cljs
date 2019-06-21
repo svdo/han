@@ -37,7 +37,7 @@
 
 (defn cell [details]
   (let [item (:item details)
-        {:keys [measureNumber showMeasureNumber isSelected]} item]
+        {:keys [measureNumber showMeasureNumber isSelected beats duration]} item]
     [:> ViewOverflow {:style {:min-width 60 :height 65 :display "flex" :flex-direction "column"}}
      [:> rn/View {:style {:height 32}}
 
@@ -64,10 +64,8 @@
       (bar-lines "100%" 0 isSelected)]
 
      [:> rn/View {:style {:width "100%" :height 33 :display "flex" :flex-direction "column" :justify-content "space-around" :align-items "center"}}
-      (if (= 2 measureNumber)
-        [:> rn/Text {:style (:time-signature styles)} "2+2+3+2+2"]
-        [:> rn/Text {:style (:time-signature styles)} "3"])
-      [:> rn/Text {:style (:time-signature styles)} "4"]]]))
+      [:> rn/Text {:style (:time-signature styles)} beats]
+      [:> rn/Text {:style (:time-signature styles)} duration]]]))
 
 (defn single-line-separator []
   [:> ViewOverflow {:style {:width 1 :height 65}}
@@ -99,7 +97,10 @@
     {:data (clj->js (mapv (fn [n] {:key (str n)
                                    :measureNumber n
                                    :showMeasureNumber true
-                                   :isSelected (= n 2)}) (range 1 4)))
+                                   :isSelected (= n 2)
+                                   :beats (if (= 2 n) "2+2+3+2+2" 3)
+                                   :duration "4"})
+                          (range 1 4)))
      :horizontal true
      :Cell-renderer-component ViewOverflow
      :List-header-component #(r/as-element [header])
