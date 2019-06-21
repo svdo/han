@@ -36,9 +36,9 @@
                              extra-styles)}])
 
 (defn cell [details]
-  (let [item (details "item")
-        num (item "measureNumber")
-        show-num (item "showMeasureNumber")]
+  (let [item (:item details)
+        num (:measureNumber item)
+        show-num (:showMeasureNumber item)]
     [:> ViewOverflow {:style {:min-width 60 :height 65 :display "flex" :flex-direction "column"}}
      [:> rn/View {:style {:height 32}}
 
@@ -105,7 +105,7 @@
      :List-header-component #(r/as-element [header])
      :List-footer-component #(r/as-element [footer])
      :Item-separator-component #(r/as-element [separator %])
-     :render-item (fn [details] (r/as-element [cell (js->clj details)]))}]])
+     :render-item (fn [details] (r/as-element [cell (js->clj details :keywordize-keys true)]))}]])
 
 (comment
   ;; if needed for performance, consider https://github.com/Flipkart/recyclerlistview
