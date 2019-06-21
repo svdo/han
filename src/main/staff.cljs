@@ -5,12 +5,6 @@
             [styles :refer (styles style)]
             [images :refer (images)]))
 
-(defn show-measure-num? [num]
-  (or (= 1 num)
-      (= 0 (mod num 5))))
-
-(def show-double-bar? show-measure-num?) ;; todo temporary
-
 (defn bar-lines
   ([width margin-left]
    (bar-lines width margin-left false))
@@ -79,7 +73,7 @@
     (bar-lines 1 1)]])
 
 (defn separator [props]
-  (if (show-double-bar? (.-measureNumber (.-leadingItem props)))
+  (if (.-nextMeasureHasDifferentTempo (.-leadingItem props))
     (double-line-separator)
     (single-line-separator)))
 
@@ -102,6 +96,7 @@
                                    :isSelected (= n 2)
                                    :beats (if (= 2 n) "2+2+3+2+2" 3)
                                    :duration "4"
+                                   :nextMeasureHasDifferentTempo (= 1 n)
                                    :showTempo (= 2 n)
                                    :tempoMultiplier :note/dotted-sixteenth
                                    :tempoNumber 160})
