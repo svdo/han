@@ -14,11 +14,13 @@
 (defn bar-lines [width margin-left]
   (map (fn [i] ^{:key (str i)} [:> rn/View {:style {:margin-left margin-left
                                                     :width width
-                                                    :height (if (= i 5) 9 8)
+                                                    :height (if (= i 4) 9 8)
                                                     :background-color "white"
                                                     :border-top-width 1
-                                                    :border-top-color "black"}}])
-       (range 1 6)))
+                                                    :border-top-color "black"
+                                                    :border-bottom-width (if (= i 4) 1 0)
+                                                    :border-bottom-color "black"}}])
+       (range 1 5)))
 
 (defn cell [details]
   (let [item (details "item")
