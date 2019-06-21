@@ -37,7 +37,8 @@
 
 (defn cell [details]
   (let [item (:item details)
-        {:keys [measureNumber showMeasureNumber isSelected beats duration tempoNumber]} item]
+        {:keys [measureNumber showMeasureNumber isSelected beats duration
+                showTempo tempoMultiplier tempoNumber]} item]
     [:> ViewOverflow (style :measure/cell)
      [:> rn/View {:style {:height 32}}
 
@@ -52,13 +53,14 @@
         (cursor {:bottom 2})]]
 
       ;; tempo
-      [:> rn/View (style :measure/tempo)
-       (let [note (:note/dotted-sixteenth images)]
-         [:> rn/Image {:source (:img note)
-                       :style {:tint-color "black"
-                               :width (* 0.7 (:width note))
-                               :height (* 0.7 (:height note))}}])
-       [:> rn/Text {:style (:tempo-text styles)} "=160"]]]
+      (when showTempo
+        [:> rn/View (style :measure/tempo)
+         (let [note ((keyword (str "note/" tempoMultiplier)) images)]
+           [:> rn/Image {:source (:img note)
+                         :style {:tint-color "black"
+                                 :width (* 0.7 (:width note))
+                                 :height (* 0.7 (:height note))}}])
+         [:> rn/Text (style :measure/tempo-text) (str "=" tempoNumber)]])]
 
      [:> rn/View (style :measure/bar-lines)
       (bar-lines "100%" 0 isSelected)]
@@ -99,7 +101,10 @@
                                    :showMeasureNumber true
                                    :isSelected (= n 2)
                                    :beats (if (= 2 n) "2+2+3+2+2" 3)
-                                   :duration "4"})
+                                   :duration "4"
+                                   :showTempo (= 2 n)
+                                   :tempoMultiplier :note/dotted-sixteenth
+                                   :tempoNumber 160})
                           (range 1 4)))
      :horizontal true
      :Cell-renderer-component ViewOverflow
