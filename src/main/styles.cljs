@@ -39,7 +39,7 @@
     :height 0
     :width 0}
 
-   :measure-number
+   :measure/measure-number
    {:position "absolute"
     :left -15
     :width 30
@@ -55,13 +55,56 @@
   ;   :flex-direction "column"
   ;   :justify-content "space-around"}
 
-   :time-signature
+   :measure/time-signature
+   {:width "100%" :height 33
+    :display "flex"
+    :flex-direction "column"
+    :justify-content "space-around"
+    :align-items "center"}
+
+   :measure/time-signature-text
    {:font-family serif-font
     :font-size 18
     :font-weight "bold"
     :padding-left 3
     :padding-right 3}
 
-   :tempo-text
-   {:font-size 11}})
+   :measure/tempo-text
+   {:font-size 11}
 
+   :measure/bar-lines
+   {:position "absolute"
+    :top 32
+    :width "100%"
+    :height 33
+    :display "flex"
+    :flex-direction "column"}
+
+   :measure/tempo
+   {:display "flex"
+    :flex-direction "row"
+    :justify-content "flex-start"
+    :align-items "flex-end"
+    :margin-left 2}
+
+   :measure/cell
+   {:min-width 60
+    :height 65
+    :display "flex"
+    :flex-direction "column"}
+
+   :measure/cursor-on
+   {:display "flex"
+    :width "100%"
+    :height 32
+    :flex-direction "row"
+    :justify-content "center"}
+
+   :measure/number-and-cursors
+   {:position "absolute"
+    :top 0
+    :width "100%"
+    :height 32}})
+
+(defn style [key]
+  {:style (key styles)})

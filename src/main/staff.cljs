@@ -2,7 +2,7 @@
   (:require ["react-native" :as rn]
             ["react-native-view-overflow" :default ViewOverflow]
             [reagent.core :as r]
-            [styles :refer (styles)]
+            [styles :refer (styles style)]
             [images :refer (images)]))
 
 (defn show-measure-num? [num]
@@ -37,22 +37,22 @@
 
 (defn cell [details]
   (let [item (:item details)
-        {:keys [measureNumber showMeasureNumber isSelected beats duration]} item]
-    [:> ViewOverflow {:style {:min-width 60 :height 65 :display "flex" :flex-direction "column"}}
+        {:keys [measureNumber showMeasureNumber isSelected beats duration tempoNumber]} item]
+    [:> ViewOverflow (style :measure/cell)
      [:> rn/View {:style {:height 32}}
 
-      [:> rn/View {:style {:position "absolute" :top 0 :width "100%" :height 32}}
+      [:> rn/View (style :measure/number-and-cursors)
        (when showMeasureNumber
-         [:> rn/Text {:style (:measure-number styles)} measureNumber])
+         [:> rn/Text (style :measure/measure-number) measureNumber])
        ;; variant with cursor between measures
        (cursor {:bottom (if showMeasureNumber 16 2) :left -5})
 
        ;; variant with cursor on measure
-       [:> rn/View {:style {:display "flex" :width "100%" :height 32 :flex-direction "row" :justify-content "center"}}
+       [:> rn/View (style :measure/cursor-on)
         (cursor {:bottom 2})]]
 
       ;; tempo
-      [:> rn/View {:style {:display "flex" :flex-direction "row" :justify-content "flex-start" :align-items "flex-end" :margin-left 2}}
+      [:> rn/View (style :measure/tempo)
        (let [note (:note/dotted-sixteenth images)]
          [:> rn/Image {:source (:img note)
                        :style {:tint-color "black"
@@ -60,12 +60,12 @@
                                :height (* 0.7 (:height note))}}])
        [:> rn/Text {:style (:tempo-text styles)} "=160"]]]
 
-     [:> rn/View {:style {:position "absolute" :top 32 :width "100%" :height 33 :display "flex" :flex-direction "column"}}
+     [:> rn/View (style :measure/bar-lines)
       (bar-lines "100%" 0 isSelected)]
 
-     [:> rn/View {:style {:width "100%" :height 33 :display "flex" :flex-direction "column" :justify-content "space-around" :align-items "center"}}
-      [:> rn/Text {:style (:time-signature styles)} beats]
-      [:> rn/Text {:style (:time-signature styles)} duration]]]))
+     [:> rn/View (style :measure/time-signature)
+      [:> rn/Text (style :measure/time-signature-text) beats]
+      [:> rn/Text (style :measure/time-signature-text) duration]]]))
 
 (defn single-line-separator []
   [:> ViewOverflow {:style {:width 1 :height 65}}
