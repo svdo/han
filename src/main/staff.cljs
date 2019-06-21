@@ -73,7 +73,7 @@
     (bar-lines 1 1)]])
 
 (defn separator [props]
-  (if (.-nextMeasureHasDifferentTempo (.-leadingItem props))
+  (if (.. props -leadingItem -nextMeasureHasDifferentTempo)
     (double-line-separator)
     (single-line-separator)))
 
