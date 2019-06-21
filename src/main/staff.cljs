@@ -11,16 +11,19 @@
 
 (def show-double-bar? show-measure-num?) ;; todo temporary
 
-(defn bar-lines [width margin-left]
-  (map (fn [i] ^{:key (str i)} [:> rn/View {:style {:margin-left margin-left
-                                                    :width width
-                                                    :height (if (= i 4) 9 8)
-                                                    :background-color "white"
-                                                    :border-top-width 1
-                                                    :border-top-color "black"
-                                                    :border-bottom-width (if (= i 4) 1 0)
-                                                    :border-bottom-color "black"}}])
-       (range 1 5)))
+(defn bar-lines
+  ([width margin-left]
+   (bar-lines width margin-left false))
+  ([width margin-left selected]
+   (map (fn [i] ^{:key (str i)} [:> rn/View {:style {:margin-left margin-left
+                                                     :width width
+                                                     :height (if (= i 4) 9 8)
+                                                     :background-color (if selected "#ddf" "white")
+                                                     :border-top-width 1
+                                                     :border-top-color "black"
+                                                     :border-bottom-width (if (= i 4) 1 0)
+                                                     :border-bottom-color "black"}}])
+        (range 1 5))))
 
 (defn cell [details]
   (let [item (details "item")
@@ -58,7 +61,7 @@
        [:> rn/Text {:style (:tempo-text styles)} "=160"]]]
 
      [:> rn/View {:style {:position "absolute" :top 32 :width "100%" :height 33 :display "flex" :flex-direction "column"}}
-      (bar-lines "100%" 0)]
+      (bar-lines "100%" 0 (= num 1))]
 
      [:> rn/View {:style {:width "100%" :height 33 :display "flex" :flex-direction "column" :justify-content "space-around" :align-items "center"}}
       (if (= 2 num)
