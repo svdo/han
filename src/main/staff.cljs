@@ -37,16 +37,15 @@
 
 (defn cell [details]
   (let [item (:item details)
-        num (:measureNumber item)
-        show-num (:showMeasureNumber item)]
+        {:keys [measureNumber showMeasureNumber isSelected]} item]
     [:> ViewOverflow {:style {:min-width 60 :height 65 :display "flex" :flex-direction "column"}}
      [:> rn/View {:style {:height 32}}
 
       [:> rn/View {:style {:position "absolute" :top 0 :width "100%" :height 32}}
-       (when show-num
-         [:> rn/Text {:style (:measure-number styles)} num])
+       (when showMeasureNumber
+         [:> rn/Text {:style (:measure-number styles)} measureNumber])
        ;; variant with cursor between measures
-       (cursor {:bottom (if show-num 16 2) :left -5})
+       (cursor {:bottom (if showMeasureNumber 16 2) :left -5})
 
        ;; variant with cursor on measure
        [:> rn/View {:style {:display "flex" :width "100%" :height 32 :flex-direction "row" :justify-content "center"}}
@@ -62,10 +61,10 @@
        [:> rn/Text {:style (:tempo-text styles)} "=160"]]]
 
      [:> rn/View {:style {:position "absolute" :top 32 :width "100%" :height 33 :display "flex" :flex-direction "column"}}
-      (bar-lines "100%" 0 (= num 1))]
+      (bar-lines "100%" 0 isSelected)]
 
      [:> rn/View {:style {:width "100%" :height 33 :display "flex" :flex-direction "column" :justify-content "space-around" :align-items "center"}}
-      (if (= 2 num)
+      (if (= 2 measureNumber)
         [:> rn/Text {:style (:time-signature styles)} "2+2+3+2+2"]
         [:> rn/Text {:style (:time-signature styles)} "3"])
       [:> rn/Text {:style (:time-signature styles)} "4"]]]))
@@ -99,7 +98,8 @@
    [:> rn/FlatList
     {:data (clj->js (mapv (fn [n] {:key (str n)
                                    :measureNumber n
-                                   :showMeasureNumber true}) (range 1 4)))
+                                   :showMeasureNumber true
+                                   :isSelected (= n 2)}) (range 1 4)))
      :horizontal true
      :Cell-renderer-component ViewOverflow
      :List-header-component #(r/as-element [header])
