@@ -37,14 +37,16 @@
 
 (defn cell [details]
   (let [item (details "item")
-        num (item "measureNumber")]
+        num (item "measureNumber")
+        show-num (item "showMeasureNumber")]
     [:> ViewOverflow {:style {:min-width 60 :height 65 :display "flex" :flex-direction "column"}}
      [:> rn/View {:style {:height 32}}
 
       [:> rn/View {:style {:position "absolute" :top 0 :width "100%" :height 32}}
-       [:> rn/Text {:style (:measure-number styles)} num]
+       (when show-num
+         [:> rn/Text {:style (:measure-number styles)} num])
        ;; variant with cursor between measures
-       (cursor {:bottom 16 :left -5})
+       (cursor {:bottom (if show-num 16 2) :left -5})
 
        ;; variant with cursor on measure
        [:> rn/View {:style {:display "flex" :width "100%" :height 32 :flex-direction "row" :justify-content "center"}}
@@ -95,7 +97,9 @@
 (defn Staff [styles]
   [:> rn/View styles
    [:> rn/FlatList
-    {:data (clj->js (mapv (fn [n] {:key (str n) :measureNumber n}) (range 1 4)))
+    {:data (clj->js (mapv (fn [n] {:key (str n)
+                                   :measureNumber n
+                                   :showMeasureNumber true}) (range 1 4)))
      :horizontal true
      :Cell-renderer-component ViewOverflow
      :List-header-component #(r/as-element [header])
