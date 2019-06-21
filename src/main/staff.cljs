@@ -2,6 +2,7 @@
   (:require ["react-native" :as rn]
             ["react-native-view-overflow" :default ViewOverflow]
             [reagent.core :as r]
+            [cljs-bean.core :refer [bean]]
             [styles :refer (styles style)]
             [images :refer (images)]))
 
@@ -30,9 +31,9 @@
                              extra-styles)}])
 
 (defn cell [details]
-  (let [item (:item details)
-        {:keys [measureNumber showMeasureNumber isSelected beats duration
-                showTempo tempoMultiplier tempoNumber]} item]
+  (let [item (.-item details)
+        {:keys [measureNumber showMeasureNumber isSelected
+                beats duration showTempo tempoMultiplier tempoNumber]} (bean item)]
     [:> ViewOverflow (style :measure/cell)
      [:> rn/View {:style {:height 32}}
 
@@ -106,8 +107,7 @@
      :List-header-component #(r/as-element [header])
      :List-footer-component #(r/as-element [footer])
      :Item-separator-component #(r/as-element [separator %])
-     :render-item (fn [details] (r/as-element [cell (js->clj details :keywordize-keys true)]))}]])
+     :render-item #(r/as-element [cell %])}]])
 
-(comment
+(comment)
   ;; if needed for performance, consider https://github.com/Flipkart/recyclerlistview
-  )
