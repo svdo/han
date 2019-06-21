@@ -23,42 +23,45 @@
 (defn cell [details]
   (let [item (details "item")
         num (item "measureNumber")]
-    [:> ViewOverflow {:style {:width 68 :height 65}}
-
-     ;; variant with cursor between measures
-     [:> rn/View {:style {:position "absolute" :top 0 :width 68 :height 32}}
-      [:> rn/Text {:style (:measure-number styles)} num]
-      [:> rn/View {:style {:position "absolute"
-                           :bottom 16 :left -5 :width 10 :height 10 :background-color "transparent"
-                           :border-top-width 10 :border-top-color "blue"
-                           :border-left-width 5 :border-left-color "transparent"
-                           :border-right-width 5 :border-right-color "transparent"
-                           :border-bottom-width 0 :border-bottom-color "transparent"}}]]
-
-     ;; variant with cursor on measure
-     [:> rn/View {:style {:position "absolute" :top 0 :width 68 :height 32}}
-      ; [:> rn/Text {:style (:measure-number styles)} num]
-      [:> rn/View {:style {:display "flex" :width 68 :height 32 :flex-direction "row" :justify-content "center"}}
-       [:> rn/View {:style {:position "absolute" :bottom 2 :width 10 :height 10
-                            :background-color "transparent"
+    [:> ViewOverflow {:style {:min-width 60 :height 65 :display "flex" :flex-direction "column"}}
+     [:> rn/View {:style {:height 32}}
+      ;; variant with cursor between measures
+      [:> rn/View {:style {:position "absolute" :top 0 :width "100%" :height 32}}
+       [:> rn/Text {:style (:measure-number styles)} num]
+       [:> rn/View {:style {:position "absolute"
+                            :bottom 16 :left -5 :width 10 :height 10 :background-color "transparent"
                             :border-top-width 10 :border-top-color "blue"
                             :border-left-width 5 :border-left-color "transparent"
                             :border-right-width 5 :border-right-color "transparent"
-                            :border-bottom-width 0 :border-bottom-color "transparent"}}]]]
+                            :border-bottom-width 0 :border-bottom-color "transparent"}}]]
 
-     ;; tempo
-     [:> rn/View {:style {:display "flex" :flex-direction "row" :justify-content "flex-start" :align-items "flex-end" :margin-left 2}}
-      (let [note (:note/dotted-sixteenth images)]
-        [:> rn/Image {:source (:img note)
-                      :style {:tint-color "black"
-                              :width (* 0.7 (:width note))
-                              :height (* 0.7 (:height note))}}])
-      [:> rn/Text {:style (:tempo-text styles)} "=160"]]
+      ;; variant with cursor on measure
+      [:> rn/View {:style {:position "absolute" :top 0 :width "100%" :height 32}}
+       ; [:> rn/Text {:style (:measure-number styles)} num]
+       [:> rn/View {:style {:display "flex" :width "100%" :height 32 :flex-direction "row" :justify-content "center"}}
+        [:> rn/View {:style {:position "absolute" :bottom 2 :width 10 :height 10
+                             :background-color "transparent"
+                             :border-top-width 10 :border-top-color "blue"
+                             :border-left-width 5 :border-left-color "transparent"
+                             :border-right-width 5 :border-right-color "transparent"
+                             :border-bottom-width 0 :border-bottom-color "transparent"}}]]]
 
-     [:> rn/View {:style {:position "absolute" :top 32 :width 68 :height 33 :display "flex" :flex-direction "column"}}
-      (bar-lines 68 0)]
-     [:> rn/View {:style {:position "absolute" :top 32 :width 68 :height 33 :display "flex" :flex-direction "column" :justify-content "space-around" :align-items "center"}}
-      [:> rn/Text {:style (:time-signature styles)} "3"]
+      ;; tempo
+      [:> rn/View {:style {:display "flex" :flex-direction "row" :justify-content "flex-start" :align-items "flex-end" :margin-left 2}}
+       (let [note (:note/dotted-sixteenth images)]
+         [:> rn/Image {:source (:img note)
+                       :style {:tint-color "black"
+                               :width (* 0.7 (:width note))
+                               :height (* 0.7 (:height note))}}])
+       [:> rn/Text {:style (:tempo-text styles)} "=160"]]]
+
+     [:> rn/View {:style {:position "absolute" :top 32 :width "100%" :height 33 :display "flex" :flex-direction "column"}}
+      (bar-lines "100%" 0)]
+
+     [:> rn/View {:style {:width "100%" :height 33 :display "flex" :flex-direction "column" :justify-content "space-around" :align-items "center"}}
+      (if (= 2 num)
+        [:> rn/Text {:style (:time-signature styles)} "2+2+3+2+2"]
+        [:> rn/Text {:style (:time-signature styles)} "3"])
       [:> rn/Text {:style (:time-signature styles)} "4"]]]))
 
 (defn single-line-separator []

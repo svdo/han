@@ -58,7 +58,9 @@
    :time-signature
    {:font-family serif-font
     :font-size 18
-    :font-weight "bold"}
+    :font-weight "bold"
+    :padding-left 3
+    :padding-right 3}
 
    :tempo-text
    {:font-size 11}})
