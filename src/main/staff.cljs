@@ -6,8 +6,7 @@
             [styles :refer (styles style)]
             [images :refer (images)]))
 
-(def sample-data (atom (mapv (fn [n] {:key (str n)
-                                      :measureNumber n
+(def sample-data (atom (mapv (fn [n] {:measureNumber n
                                       :showMeasureNumber true
                                       :isSelected (= n 2)
                                       :beats (if (= 2 n) "2+2+3+2+2" 3)
@@ -158,6 +157,7 @@
   [:> rn/View styles
    [:> rn/FlatList
     {:data ^js @view-model
+     :key-extractor (fn [item _] (str (.-measureNumber item)))
      :horizontal true
      :Cell-renderer-component ViewOverflow
      :List-header-component #(r/as-element [header])
