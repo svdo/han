@@ -143,11 +143,14 @@
     {:on-press (fn []
                  (swap! sample-data (partial set-cursor-before 1))
                  (reset-view-model!))}
-     [:> rn/View {:style {:margin-top 32 :width 12 :height 33 :border-right-width 1 :border-right-color "black"}}
+    [:> rn/View {:style {:margin-top 32 :width 12 :height 33 :border-right-width 1 :border-right-color "black"}}
      (bar-lines 11 0)]]])
 
 (defn footer []
   [:> rn/View {:style {:width 11 :height 65}}
+   [:> rn/View {:style {:position "absolute" :height 32}}
+    [:> rn/View (style :measure/number-and-cursors)
+     (cursor {:bottom 2 :left -5})]]
    [:> rn/View {:style {:margin-top 32 :width 6 :height 33 :background-color "black"}}
     (bar-lines 2 1)]])
 
