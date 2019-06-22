@@ -62,7 +62,19 @@
 
      [:> rn/View (style :measure/time-signature)
       [:> rn/Text (style :measure/time-signature-text) beats]
-      [:> rn/Text (style :measure/time-signature-text) duration]]]))
+      [:> rn/Text (style :measure/time-signature-text) duration]]
+
+     [:> rn/View {:style {:position "absolute" :width "100%" :height "100%"
+                          :display "flex" :flex-direction "row"}}
+      [:> rn/TouchableWithoutFeedback
+       {:on-press #(js/console.log "left " measureNumber)}
+       [:> rn/View {:style {:width 15 :height "100%"}}]]
+      [:> rn/TouchableWithoutFeedback
+       {:on-press #(js/console.log "mid " measureNumber)}
+       [:> rn/View {:style {:flex 1 :height "100%"}}]]
+      [:> rn/TouchableWithoutFeedback
+       {:on-press #(js/console.log "right " measureNumber)}
+       [:> rn/View {:style {:width 15 :height "100%"}}]]]]))
 
 (defn single-line-separator []
   [:> ViewOverflow {:style {:width 1 :height 65}}
