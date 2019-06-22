@@ -142,9 +142,9 @@
    [:> rn/TouchableWithoutFeedback
     {:on-press (fn []
                  (swap! sample-data (partial set-cursor-before 1))
-                 (reset-view-model!))
+                 (reset-view-model!))}
      [:> rn/View {:style {:margin-top 32 :width 12 :height 33 :border-right-width 1 :border-right-color "black"}}
-      (bar-lines 11 0)]}]])
+     (bar-lines 11 0)]]])
 
 (defn footer []
   [:> rn/View {:style {:width 11 :height 65}}
