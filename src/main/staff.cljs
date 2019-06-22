@@ -6,17 +6,17 @@
             [styles :refer (styles style)]
             [images :refer (images)]))
 
-(def sample-data (r/atom (mapv (fn [n] {:key (str n)
-                                        :measureNumber n
-                                        :showMeasureNumber true
-                                        :isSelected (= n 2)
-                                        :beats (if (= 2 n) "2+2+3+2+2" 3)
-                                        :duration "4"
-                                        :nextMeasureHasDifferentTempo (= 1 n)
-                                        :showTempo (= 2 n)
-                                        :tempoMultiplier :note/dotted-sixteenth
-                                        :tempoNumber 160})
-                               (range 1 4))))
+(def sample-data (atom (mapv (fn [n] {:key (str n)
+                                      :measureNumber n
+                                      :showMeasureNumber true
+                                      :isSelected (= n 2)
+                                      :beats (if (= 2 n) "2+2+3+2+2" 3)
+                                      :duration "4"
+                                      :nextMeasureHasDifferentTempo (= 1 n)
+                                      :showTempo (= 2 n)
+                                      :tempoMultiplier :note/dotted-sixteenth
+                                      :tempoNumber 160})
+                             (range 1 4))))
 (def view-model (r/atom (clj->js @sample-data)))
 
 (defn reset-view-model! []
@@ -48,13 +48,21 @@
 
 (defn set-cursor-on [measure-number view-model]
   (map (fn [measure]
-         (assoc measure :isSelected (= measure-number (:measureNumber measure))))
+         (merge measure {:cursorOn (= measure-number (:measureNumber measure))
+                         :cursorBefore false}))
+       view-model))
+
+(defn set-cursor-before [measure-number view-model]
+  (map (fn [measure]
+         (merge measure {:cursorOn false
+                         :cursorBefore (= measure-number (:measureNumber measure))}))
        view-model))
 
 (defn cell [details]
   (let [item (.-item details)
         {:keys [measureNumber showMeasureNumber isSelected
-                beats duration showTempo tempoMultiplier tempoNumber]} (bean item)]
+                beats duration showTempo tempoMultiplier tempoNumber
+                cursorOn cursorBefore]} (bean item)]
     [:> ViewOverflow (style :measure/cell)
      [:> rn/View {:style {:height 32}}
 
@@ -62,11 +70,13 @@
        (when showMeasureNumber
          [:> rn/Text (style :measure/measure-number) measureNumber])
          ;; variant with cursor between measures
-       (cursor {:bottom (if showMeasureNumber 16 2) :left -5})
+       (when cursorBefore
+         (cursor {:bottom (if showMeasureNumber 16 2) :left -5}))
 
          ;; variant with cursor on measure
-       [:> rn/View (style :measure/cursor-on)
-        (cursor {:bottom 2})]]
+       (when cursorOn
+         [:> rn/View (style :measure/cursor-on)
+          (cursor {:bottom 2})])]
 
         ;; tempo
       (when showTempo
@@ -88,7 +98,9 @@
      [:> rn/View {:style {:position "absolute" :width "100%" :height "100%"
                           :display "flex" :flex-direction "row"}}
       [:> rn/TouchableWithoutFeedback
-       {:on-press #(js/console.log "left " measureNumber)}
+       {:on-press (fn []
+                    (swap! sample-data (partial set-cursor-before measureNumber))
+                    (reset-view-model!))}
        [:> rn/View {:style {:width 15 :height "100%"}}]]
       [:> rn/TouchableWithoutFeedback
        {:on-press (fn []
@@ -96,27 +108,43 @@
                     (reset-view-model!))}
        [:> rn/View {:style {:flex 1 :height "100%"}}]]
       [:> rn/TouchableWithoutFeedback
-       {:on-press #(js/console.log "right " measureNumber)}
+       {:on-press (fn []
+                    (swap! sample-data (partial set-cursor-before (inc measureNumber)))
+                    (reset-view-model!))}
        [:> rn/View {:style {:width 15 :height "100%"}}]]]]))
 
-(defn single-line-separator []
+(defn single-line-separator [measureNumber]
   [:> ViewOverflow {:style {:width 1 :height 65}}
-   [:> rn/View {:style {:margin-top 32 :width 1 :height 33 :border-left-width 1 :border-left-color "black"}}]])
+   [:> rn/TouchableWithoutFeedback
+    {:on-press (fn []
+                 (swap! sample-data (partial set-cursor-before (inc measureNumber)))
+                 (reset-view-model!))}
+    [:> rn/View {:style {:margin-top 32 :width 1 :height 33 :border-left-width 1 :border-left-color "black"}}]]])
 
-(defn double-line-separator []
+(defn double-line-separator [measureNumber]
   [:> ViewOverflow {:style {:width 3 :height 65}}
-   [:> rn/View {:style {:margin-top 32 :width 3 :height 33 :background-color "black"}}
-    (bar-lines 1 1)]])
+   [:> rn/TouchableWithoutFeedback
+    {:on-press (fn []
+                 (swap! sample-data (partial set-cursor-before (inc measureNumber)))
+                 (reset-view-model!))}
+    [:> rn/View {:style {:margin-top 32 :width 3 :height 33 :background-color "black"}}
+     (bar-lines 1 1)]]])
 
 (defn separator [props]
-  (if (.. props -leadingItem -nextMeasureHasDifferentTempo)
-    (double-line-separator)
-    (single-line-separator)))
+  (let [item (.-leadingItem props)
+        measureNumber (.-measureNumber item)]
+    (if (.-nextMeasureHasDifferentTempo item)
+      (double-line-separator measureNumber)
+      (single-line-separator measureNumber))))
 
 (defn header []
   [:> rn/View {:style {:width 12 :height 65}}
-   [:> rn/View {:style {:margin-top 32 :width 12 :height 33 :border-right-width 1 :border-right-color "black"}}
-    (bar-lines 11 0)]])
+   [:> rn/TouchableWithoutFeedback
+    {:on-press (fn []
+                 (swap! sample-data (partial set-cursor-before 1))
+                 (reset-view-model!))
+     [:> rn/View {:style {:margin-top 32 :width 12 :height 33 :border-right-width 1 :border-right-color "black"}}
+      (bar-lines 11 0)]}]])
 
 (defn footer []
   [:> rn/View {:style {:width 11 :height 65}}
