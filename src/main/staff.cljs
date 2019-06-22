@@ -6,6 +6,19 @@
             [styles :refer (styles style)]
             [images :refer (images)]))
 
+(def sample-data (mapv (fn [n] {:key (str n)
+                                :measureNumber n
+                                :showMeasureNumber true
+                                :isSelected (= n 2)
+                                :beats (if (= 2 n) "2+2+3+2+2" 3)
+                                :duration "4"
+                                :nextMeasureHasDifferentTempo (= 1 n)
+                                :showTempo (= 2 n)
+                                :tempoMultiplier :note/dotted-sixteenth
+                                :tempoNumber 160})
+                       (range 1 4)))
+(def view-model (r/atom (clj->js sample-data)))
+
 (defn bar-lines
   ([width margin-left]
    (bar-lines width margin-left false))
@@ -40,14 +53,14 @@
       [:> rn/View (style :measure/number-and-cursors)
        (when showMeasureNumber
          [:> rn/Text (style :measure/measure-number) measureNumber])
-       ;; variant with cursor between measures
+         ;; variant with cursor between measures
        (cursor {:bottom (if showMeasureNumber 16 2) :left -5})
 
-       ;; variant with cursor on measure
+         ;; variant with cursor on measure
        [:> rn/View (style :measure/cursor-on)
         (cursor {:bottom 2})]]
 
-      ;; tempo
+        ;; tempo
       (when showTempo
         [:> rn/View (style :measure/tempo)
          (let [note ((keyword (str "note/" tempoMultiplier)) images)]
@@ -103,17 +116,7 @@
 (defn Staff [styles]
   [:> rn/View styles
    [:> rn/FlatList
-    {:data (clj->js (mapv (fn [n] {:key (str n)
-                                   :measureNumber n
-                                   :showMeasureNumber true
-                                   :isSelected (= n 2)
-                                   :beats (if (= 2 n) "2+2+3+2+2" 3)
-                                   :duration "4"
-                                   :nextMeasureHasDifferentTempo (= 1 n)
-                                   :showTempo (= 2 n)
-                                   :tempoMultiplier :note/dotted-sixteenth
-                                   :tempoNumber 160})
-                          (range 1 4)))
+    {:data ^js @view-model
      :horizontal true
      :Cell-renderer-component ViewOverflow
      :List-header-component #(r/as-element [header])
