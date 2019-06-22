@@ -6,18 +6,21 @@
             [styles :refer (styles style)]
             [images :refer (images)]))
 
-(def sample-data (mapv (fn [n] {:key (str n)
-                                :measureNumber n
-                                :showMeasureNumber true
-                                :isSelected (= n 2)
-                                :beats (if (= 2 n) "2+2+3+2+2" 3)
-                                :duration "4"
-                                :nextMeasureHasDifferentTempo (= 1 n)
-                                :showTempo (= 2 n)
-                                :tempoMultiplier :note/dotted-sixteenth
-                                :tempoNumber 160})
-                       (range 1 4)))
-(def view-model (r/atom (clj->js sample-data)))
+(def sample-data (r/atom (mapv (fn [n] {:key (str n)
+                                        :measureNumber n
+                                        :showMeasureNumber true
+                                        :isSelected (= n 2)
+                                        :beats (if (= 2 n) "2+2+3+2+2" 3)
+                                        :duration "4"
+                                        :nextMeasureHasDifferentTempo (= 1 n)
+                                        :showTempo (= 2 n)
+                                        :tempoMultiplier :note/dotted-sixteenth
+                                        :tempoNumber 160})
+                               (range 1 4))))
+(def view-model (r/atom (clj->js @sample-data)))
+
+(defn reset-view-model! []
+  (reset! view-model (clj->js @sample-data)))
 
 (defn bar-lines
   ([width margin-left]
@@ -42,6 +45,11 @@
                               :border-right-width 5 :border-right-color "transparent"
                               :border-bottom-width 0 :border-bottom-color "transparent"}
                              extra-styles)}])
+
+(defn set-cursor-on [measure-number view-model]
+  (map (fn [measure]
+         (assoc measure :isSelected (= measure-number (:measureNumber measure))))
+       view-model))
 
 (defn cell [details]
   (let [item (.-item details)
@@ -83,7 +91,9 @@
        {:on-press #(js/console.log "left " measureNumber)}
        [:> rn/View {:style {:width 15 :height "100%"}}]]
       [:> rn/TouchableWithoutFeedback
-       {:on-press #(js/console.log "mid " measureNumber)}
+       {:on-press (fn []
+                    (swap! sample-data (partial set-cursor-on measureNumber))
+                    (reset-view-model!))}
        [:> rn/View {:style {:flex 1 :height "100%"}}]]
       [:> rn/TouchableWithoutFeedback
        {:on-press #(js/console.log "right " measureNumber)}
