@@ -20,7 +20,7 @@
       (.start node 0)
       (reset! unlocked true))))
 
-(defn schedule-note []
+(defn ^:export schedule-note []
   (let [attack 0.01
         sustain 0.03
         time (.-currentTime @audioContext)
