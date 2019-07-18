@@ -7,6 +7,7 @@
     "devtools": "react-devtools",
     "emu": "emulator -avd Nexus_5X_API_28_x86 &",
     "ios": "react-native run-ios --simulator=\"iPhone X (12.2)\"",
+    "log-ios": "react-native-log-ios Han",
     "server": "shadow-cljs server",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "shadow-cljs watch :test",
@@ -27,6 +28,7 @@
     "babel-jest": "^24.7.1",
     "jest": "^24.7.1",
     "metro-react-native-babel-preset": "^0.53.1",
+    "react-native-log-ios": "^1.0.1",
     "react-test-renderer": "16.8.3",
     "shadow-cljs": "^2.8.33"
   },
