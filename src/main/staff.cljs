@@ -7,15 +7,15 @@
             [images :refer (images)]))
 
 (def sample-data (atom (mapv (fn [n] {:measureNumber n
-                                      :showMeasureNumber true
+                                      :showMeasureNumber (or (= 1 n) (= 2 (mod n 10)) (= 0 (mod n 5)))
                                       :isSelected (= n 2)
                                       :beats (if (= 2 n) "2+2+3+2+2" 3)
-                                      :duration "4"
-                                      :nextMeasureHasDifferentTempo (= 1 n)
-                                      :showTempo (= 2 n)
+                                      :duration "8"
+                                      :nextMeasureHasDifferentTempo (= 1 (mod n 10))
+                                      :showTempo (= 2 (mod n 10))
                                       :tempoMultiplier :note/dotted-sixteenth
                                       :tempoNumber 160})
-                             (range 1 4))))
+                             (range 1 100))))
 (def view-model (r/atom (clj->js @sample-data)))
 (defn reset-view-model! []
   (reset! view-model (clj->js @sample-data)))
@@ -26,14 +26,15 @@
   ([width margin-left]
    (bar-lines width margin-left false))
   ([width margin-left selected]
-   (map (fn [i] ^{:key (str i)} [:> rn/View {:style {:margin-left margin-left
-                                                     :width width
-                                                     :height (if (= i 4) 9 8)
-                                                     :background-color (if selected "#ddf" "white")
-                                                     :border-top-width 1
-                                                     :border-top-color "black"
-                                                     :border-bottom-width (if (= i 4) 1 0)
-                                                     :border-bottom-color "black"}}])
+   (map (fn [i] ^{:key (str i)}
+          [:> rn/View {:style {:margin-left margin-left
+                               :width width
+                               :height (if (= i 4) 9 8)
+                               :background-color (if selected "#ddf" "white")
+                               :border-top-width 1
+                               :border-top-color "black"
+                               :border-bottom-width (if (= i 4) 1 0)
+                               :border-bottom-color "black"}}])
         (range 1 5))))
 
 (defn- cursor [extra-styles]
@@ -58,16 +59,16 @@
       [:> rn/View (style :measure/number-and-cursors)
        (when showMeasureNumber
          [:> rn/Text (style :measure/measure-number) measureNumber])
-         ;; variant with cursor between measures
+       ;; variant with cursor between measures
        (when (and (= measureNumber cursorPos) (not cursorOn))
          (cursor {:bottom (if showMeasureNumber 16 2) :left -5}))
 
-         ;; variant with cursor on measure
+       ;; variant with cursor on measure
        (when (and (= measureNumber cursorPos) cursorOn)
          [:> rn/View (style :measure/cursor-on)
           (cursor {:bottom 2})])]
 
-        ;; tempo
+      ;; tempo
       (when showTempo
         [:> rn/View (style :measure/tempo)
          (let [note ((keyword (str "note/" tempoMultiplier)) images)]
