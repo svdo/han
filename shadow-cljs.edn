@@ -31,4 +31,7 @@
    :output-to "build/test.js"
    :ns-regexp "-test$"
    :autorun   true
-   :compiler-options {:reader-features #{:test}}}}}
+   :compiler-options {:reader-features #{:test}}}}
+
+ :nrepl {:port 9000}}
+
