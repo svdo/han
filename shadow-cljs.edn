@@ -17,7 +17,8 @@
    :init-fn app/init
    :output-dir "build"
    :devtools {:autoload true
-              :preloads [devtools.preload]}}
+              :preloads [devtools.preload]}
+   :compiler-options {:infer-externs :auto}}
 
   :player
   {:target :browser
@@ -25,7 +26,8 @@
    :output-dir "public/audio-engine"
    :devtools {:loader-mode :eval
               :console-support false}
-   :modules {:index {:entries [audio.engine]}}}
+   :modules {:index {:entries [audio.engine]}}
+   :compiler-options {:infer-externs :auto}}
 
   :test
   {:target :node-test
@@ -35,4 +37,3 @@
    :compiler-options {:reader-features #{:test}}}}
 
  :nrepl {:port 9000}}
-
