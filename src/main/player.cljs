@@ -18,11 +18,11 @@
     (reset! javascript-injected true)
     (reset! webview-ref ref)
     (js/setTimeout
-     #(.injectJavaScript ref (initial-js))
+     #(.injectJavaScript ^js ref (initial-js))
      1000)))
 
 (defn message-from-webview [event]
-  (let [native-event (.-nativeEvent event)
+  (let [native-event (.-nativeEvent ^js event)
         data (.-data native-event)
         parsed (js/JSON.parse data)
         logType (.-logType parsed)]

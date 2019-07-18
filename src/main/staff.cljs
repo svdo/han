@@ -51,8 +51,8 @@
   (let [item (.-item details)
         {:keys [measureNumber showMeasureNumber isSelected
                 beats duration showTempo tempoMultiplier tempoNumber]} (bean item)
-        cursorPos (.-pos @cursor-info)
-        cursorOn (.-on @cursor-info)]
+        cursorPos (.-pos ^js @cursor-info)
+        cursorOn (.-on ^js @cursor-info)]
     [:> ViewOverflow (style :measure/cell)
      [:> rn/View {:style {:height 32}}
 
@@ -116,7 +116,7 @@
      (bar-lines 1 1)]]])
 
 (defn separator [props]
-  (let [item (.-leadingItem props)
+  (let [item (.-leadingItem ^js props)
         measureNumber (.-measureNumber item)]
     (if (.-nextMeasureHasDifferentTempo item)
       (double-line-separator measureNumber)
@@ -133,7 +133,7 @@
 (defn footer []
   (let [lastMeasure (last @view-model)
         lastMeasureNum (.-measureNumber lastMeasure)
-        has-cursor (= (inc lastMeasureNum) (.-pos @cursor-info))]
+        has-cursor (= (inc lastMeasureNum) (.-pos ^js @cursor-info))]
     [:> rn/TouchableWithoutFeedback
      {:on-press (fn []
                   (reset! cursor-info #js {:on false :pos (inc lastMeasureNum)}))}
@@ -150,7 +150,7 @@
    [:> rn/FlatList
     {:data ^js @view-model
      :extra-data ^js @cursor-info
-     :key-extractor (fn [item _] (str (.-measureNumber item)))
+     :key-extractor (fn [^js item _] (str (.-measureNumber item)))
      :horizontal true
      :Cell-renderer-component ViewOverflow
      :List-header-component #(r/as-element [header])
