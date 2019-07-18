@@ -6,9 +6,6 @@
             [staff :refer [Staff]]
             [styles :refer [styles]]))
 
-(devtools/set-pref! :disable-advanced-mode-check true)
-(devtools/install!)
-
 (def instructions
   (.select Platform
            #js {:ios "Press Cmd+R to reload,\nCmd+D or shake for dev menu"
