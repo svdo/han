@@ -20,7 +20,7 @@
 (defn reset-view-model! []
   (reset! view-model (clj->js @sample-data)))
 
-(def cursor-info (r/atom #js {:on true :pos 1}))
+(def cursor-info (r/atom {:on true :pos 1}))
 
 (defn bar-lines
   ([width margin-left]
@@ -51,8 +51,8 @@
   (let [item (.-item details)
         {:keys [measureNumber showMeasureNumber isSelected
                 beats duration showTempo tempoMultiplier tempoNumber]} (bean item)
-        cursorPos (.-pos ^js @cursor-info)
-        cursorOn (.-on ^js @cursor-info)]
+        cursorPos (:pos @cursor-info)
+        cursorOn (:on @cursor-info)]
     [:> ViewOverflow (style :measure/cell)
      [:> rn/View {:style {:height 32}}
 
@@ -89,29 +89,29 @@
                           :display "flex" :flex-direction "row"}}
       [:> rn/TouchableWithoutFeedback
        {:on-press (fn []
-                    (reset! cursor-info #js {:on false :pos measureNumber}))}
+                    (reset! cursor-info {:on false :pos measureNumber}))}
        [:> rn/View {:style {:width 15 :height "100%"}}]]
       [:> rn/TouchableWithoutFeedback
        {:on-press (fn []
-                    (reset! cursor-info #js {:on true :pos measureNumber}))}
+                    (reset! cursor-info {:on true :pos measureNumber}))}
        [:> rn/View {:style {:flex 1 :height "100%"}}]]
       [:> rn/TouchableWithoutFeedback
        {:on-press (fn []
-                    (reset! cursor-info #js {:on false :pos (inc measureNumber)}))}
+                    (reset! cursor-info {:on false :pos (inc measureNumber)}))}
        [:> rn/View {:style {:width 15 :height "100%"}}]]]]))
 
 (defn single-line-separator [measureNumber]
   [:> ViewOverflow {:style {:width 1 :height 65}}
    [:> rn/TouchableWithoutFeedback
     {:on-press (fn []
-                 (reset! cursor-info #js {:on false :pos (inc measureNumber)}))}
+                 (reset! cursor-info {:on false :pos (inc measureNumber)}))}
     [:> rn/View {:style {:margin-top 32 :width 1 :height 33 :border-left-width 1 :border-left-color "black"}}]]])
 
 (defn double-line-separator [measureNumber]
   [:> ViewOverflow {:style {:width 3 :height 65}}
    [:> rn/TouchableWithoutFeedback
     {:on-press (fn []
-                 (reset! cursor-info #js {:on false :pos (inc measureNumber)}))}
+                 (reset! cursor-info {:on false :pos (inc measureNumber)}))}
     [:> rn/View {:style {:margin-top 32 :width 3 :height 33 :background-color "black"}}
      (bar-lines 1 1)]]])
 
@@ -126,17 +126,17 @@
   [:> rn/View {:style {:width 12 :height 65}}
    [:> rn/TouchableWithoutFeedback
     {:on-press (fn []
-                 (reset! cursor-info #js {:on false :pos 1}))}
+                 (reset! cursor-info {:on false :pos 1}))}
     [:> rn/View {:style {:margin-top 32 :width 12 :height 33 :border-right-width 1 :border-right-color "black"}}
      (bar-lines 11 0)]]])
 
 (defn footer []
   (let [lastMeasure (last @view-model)
         lastMeasureNum (.-measureNumber lastMeasure)
-        has-cursor (= (inc lastMeasureNum) (.-pos ^js @cursor-info))]
+        has-cursor (= (inc lastMeasureNum) (:pos @cursor-info))]
     [:> rn/TouchableWithoutFeedback
      {:on-press (fn []
-                  (reset! cursor-info #js {:on false :pos (inc lastMeasureNum)}))}
+                  (reset! cursor-info {:on false :pos (inc lastMeasureNum)}))}
      [:> rn/View {:style {:width 11 :height 65}}
       (when has-cursor
         [:> rn/View {:style {:position "absolute" :height 32}}
@@ -148,8 +148,7 @@
 (defn Staff [styles]
   [:> rn/View styles
    [:> rn/FlatList
-    {:data ^js @view-model
-     :extra-data ^js @cursor-info
+    {:data @view-model
      :key-extractor (fn [^js item _] (str (.-measureNumber item)))
      :horizontal true
      :Cell-renderer-component ViewOverflow
