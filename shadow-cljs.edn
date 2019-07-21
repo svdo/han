@@ -9,7 +9,7 @@
   [binaryage/devtools "0.9.10"]
   [org.clojure/test.check "0.9.0"]
   [cider/cider-nrepl "0.21.1"]
-  [cljs-bean "1.0.0"]]
+  [cljs-bean "1.3.0"]]
 
  :builds
  {:han
