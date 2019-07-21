@@ -50,8 +50,6 @@
 (defn- move-cursor! [{:keys [on pos]}]
   (reset! cursor-info {:on on :pos pos}))
 
-(def cell-render-count (atom 0))
-
 (defn- cell-measure-number [measureNumber]
   [:> rn/Text (style :measure/measure-number) measureNumber])
 
@@ -99,9 +97,6 @@
 (defn cell [details]
   (let [item (.-item details)
         {:keys [measureNumber showMeasureNumber isSelected
-    (swap! cell-render-count inc)
-    (js/console.log details @cell-render-count)
-
                 beats duration showTempo tempoMultiplier tempoNumber]} (bean item)]
     [:> ViewOverflow (style :measure/cell)
      [:> rn/View {:style {:height 32}}
