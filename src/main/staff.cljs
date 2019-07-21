@@ -108,17 +108,17 @@
 
       [:> rn/View (style :measure/number-and-cursors)
        (when showMeasureNumber
-         (cell-measure-number measureNumber))
+         [cell-measure-number measureNumber])
 
        (when (= measureNumber cursorPos)
-         (cell-cursor cursorOn showMeasureNumber))]
+         [cell-cursor cursorOn showMeasureNumber])]
 
       (when showTempo
-        (cell-tempo tempoMultiplier tempoNumber))]
+        [cell-tempo tempoMultiplier tempoNumber])]
 
-     (cell-bar-lines isSelected)
-     (cell-time-signature beats duration)
-     (cell-touch-areas measureNumber)]))
+     [cell-bar-lines isSelected]
+     [cell-time-signature beats duration]
+     [cell-touch-areas measureNumber]]))
 
 (defn single-line-separator [measureNumber]
   [:> ViewOverflow {:style {:width 1 :height 65}}
@@ -139,8 +139,8 @@
   (let [item (.-leadingItem ^js props)
         measureNumber (.-measureNumber item)]
     (if (.-nextMeasureHasDifferentTempo item)
-      (double-line-separator measureNumber)
-      (single-line-separator measureNumber))))
+      [double-line-separator measureNumber]
+      [single-line-separator measureNumber])))
 
 (defn header []
   [:> rn/View {:style {:width 12 :height 65}}
