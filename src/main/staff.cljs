@@ -47,12 +47,17 @@
                               :border-bottom-width 0 :border-bottom-color "transparent"}
                              extra-styles)}])
 
+(def cell-render-count (atom 0))
+
 (defn cell [details]
   (let [item (.-item details)
         {:keys [measureNumber showMeasureNumber isSelected
                 beats duration showTempo tempoMultiplier tempoNumber]} (bean item)
         cursorPos (:pos @cursor-info)
         cursorOn (:on @cursor-info)]
+    (swap! cell-render-count inc)
+    (js/console.log details @cell-render-count)
+
     [:> ViewOverflow (style :measure/cell)
      [:> rn/View {:style {:height 32}}
 
