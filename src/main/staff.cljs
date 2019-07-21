@@ -47,6 +47,9 @@
                               :border-bottom-width 0 :border-bottom-color "transparent"}
                              extra-styles)}])
 
+(defn- move-cursor! [{:keys [on pos]}]
+  (reset! cursor-info {:on on :pos pos}))
+
 (def cell-render-count (atom 0))
 
 (defn cell [details]
@@ -94,29 +97,29 @@
                           :display "flex" :flex-direction "row"}}
       [:> rn/TouchableWithoutFeedback
        {:on-press (fn []
-                    (reset! cursor-info {:on false :pos measureNumber}))}
+                    (move-cursor! {:on false :pos measureNumber}))}
        [:> rn/View {:style {:width 15 :height "100%"}}]]
       [:> rn/TouchableWithoutFeedback
        {:on-press (fn []
-                    (reset! cursor-info {:on true :pos measureNumber}))}
+                    (move-cursor! {:on true :pos measureNumber}))}
        [:> rn/View {:style {:flex 1 :height "100%"}}]]
       [:> rn/TouchableWithoutFeedback
        {:on-press (fn []
-                    (reset! cursor-info {:on false :pos (inc measureNumber)}))}
+                    (move-cursor! {:on false :pos (inc measureNumber)}))}
        [:> rn/View {:style {:width 15 :height "100%"}}]]]]))
 
 (defn single-line-separator [measureNumber]
   [:> ViewOverflow {:style {:width 1 :height 65}}
    [:> rn/TouchableWithoutFeedback
     {:on-press (fn []
-                 (reset! cursor-info {:on false :pos (inc measureNumber)}))}
+                 (move-cursor! {:on false :pos (inc measureNumber)}))}
     [:> rn/View {:style {:margin-top 32 :width 1 :height 33 :border-left-width 1 :border-left-color "black"}}]]])
 
 (defn double-line-separator [measureNumber]
   [:> ViewOverflow {:style {:width 3 :height 65}}
    [:> rn/TouchableWithoutFeedback
     {:on-press (fn []
-                 (reset! cursor-info {:on false :pos (inc measureNumber)}))}
+                 (move-cursor! {:on false :pos (inc measureNumber)}))}
     [:> rn/View {:style {:margin-top 32 :width 3 :height 33 :background-color "black"}}
      (bar-lines 1 1)]]])
 
@@ -131,7 +134,7 @@
   [:> rn/View {:style {:width 12 :height 65}}
    [:> rn/TouchableWithoutFeedback
     {:on-press (fn []
-                 (reset! cursor-info {:on false :pos 1}))}
+                 (move-cursor! {:on false :pos 1}))}
     [:> rn/View {:style {:margin-top 32 :width 12 :height 33 :border-right-width 1 :border-right-color "black"}}
      (bar-lines 11 0)]]])
 
@@ -141,7 +144,7 @@
         has-cursor (= (inc lastMeasureNum) (:pos @cursor-info))]
     [:> rn/TouchableWithoutFeedback
      {:on-press (fn []
-                  (reset! cursor-info {:on false :pos (inc lastMeasureNum)}))}
+                  (move-cursor! {:on false :pos (inc lastMeasureNum)}))}
      [:> rn/View {:style {:width 11 :height 65}}
       (when has-cursor
         [:> rn/View {:style {:position "absolute" :height 32}}
