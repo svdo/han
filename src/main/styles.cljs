@@ -43,9 +43,10 @@
    {:position "absolute"
     :left -15
     :width 30
-    :bottom 0
+    :bottom -1
     :font-family serif-font
-    :text-align "center"}
+    :text-align "center"
+    :font-size 12}
 
   ;  :measure-contents
   ;  {:margin-top 32
