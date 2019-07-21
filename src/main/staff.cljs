@@ -55,10 +55,12 @@
 (defn- cell-measure-number [measureNumber]
   [:> rn/Text (style :measure/measure-number) measureNumber])
 
-(defn- cell-cursor [cursorOn showMeasureNumber]
-  (if cursorOn
-    [:> rn/View (style :measure/cursor-on) (cursor {:bottom 2})]
-    (cursor {:bottom (if showMeasureNumber 16 2) :left -5})))
+(defn- cell-cursor [measureNumber showMeasureNumber]
+  (let [{:keys [on pos]} @cursor-info]
+    (when (= measureNumber pos)
+      (if on
+        [:> rn/View (style :measure/cursor-on) (cursor {:bottom 2})]
+        (cursor {:bottom (if showMeasureNumber 16 2) :left -5})))))
 
 (defn- cell-tempo [tempoMultiplier tempoNumber]
   [:> rn/View (style :measure/tempo)
@@ -97,12 +99,10 @@
 (defn cell [details]
   (let [item (.-item details)
         {:keys [measureNumber showMeasureNumber isSelected
-                beats duration showTempo tempoMultiplier tempoNumber]} (bean item)
-        cursorPos (:pos @cursor-info)
-        cursorOn (:on @cursor-info)]
     (swap! cell-render-count inc)
     (js/console.log details @cell-render-count)
 
+                beats duration showTempo tempoMultiplier tempoNumber]} (bean item)]
     [:> ViewOverflow (style :measure/cell)
      [:> rn/View {:style {:height 32}}
 
@@ -110,8 +110,7 @@
        (when showMeasureNumber
          [cell-measure-number measureNumber])
 
-       (when (= measureNumber cursorPos)
-         [cell-cursor cursorOn showMeasureNumber])]
+       [cell-cursor measureNumber showMeasureNumber]]
 
       (when showTempo
         [cell-tempo tempoMultiplier tempoNumber])]
