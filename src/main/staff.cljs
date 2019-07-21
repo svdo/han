@@ -52,6 +52,48 @@
 
 (def cell-render-count (atom 0))
 
+(defn- cell-measure-number [measureNumber]
+  [:> rn/Text (style :measure/measure-number) measureNumber])
+
+(defn- cell-cursor [cursorOn showMeasureNumber]
+  (if cursorOn
+    [:> rn/View (style :measure/cursor-on) (cursor {:bottom 2})]
+    (cursor {:bottom (if showMeasureNumber 16 2) :left -5})))
+
+(defn- cell-tempo [tempoMultiplier tempoNumber]
+  [:> rn/View (style :measure/tempo)
+   (let [note ((keyword (str "note/" tempoMultiplier)) images)]
+     [:> rn/Image {:source (:img note)
+                   :style {:tint-color "black"
+                           :width (* 0.7 (:width note))
+                           :height (* 0.7 (:height note))}}])
+   [:> rn/Text (style :measure/tempo-text) (str "=" tempoNumber)]])
+
+(defn- cell-bar-lines [isSelected]
+  [:> rn/View (style :measure/bar-lines)
+   (bar-lines "100%" 0 isSelected)])
+
+(defn- cell-time-signature [beats duration]
+  [:> rn/View (style :measure/time-signature)
+   [:> rn/Text (style :measure/time-signature-text) beats]
+   [:> rn/Text (style :measure/time-signature-text) duration]])
+
+(defn- cell-touch-areas [measureNumber]
+  [:> rn/View {:style {:position "absolute" :width "100%" :height "100%"
+                       :display "flex" :flex-direction "row"}}
+   [:> rn/TouchableWithoutFeedback
+    {:on-press (fn []
+                 (move-cursor! {:on false :pos measureNumber}))}
+    [:> rn/View {:style {:width 15 :height "100%"}}]]
+   [:> rn/TouchableWithoutFeedback
+    {:on-press (fn []
+                 (move-cursor! {:on true :pos measureNumber}))}
+    [:> rn/View {:style {:flex 1 :height "100%"}}]]
+   [:> rn/TouchableWithoutFeedback
+    {:on-press (fn []
+                 (move-cursor! {:on false :pos (inc measureNumber)}))}
+    [:> rn/View {:style {:width 15 :height "100%"}}]]])
+
 (defn cell [details]
   (let [item (.-item details)
         {:keys [measureNumber showMeasureNumber isSelected
@@ -66,47 +108,17 @@
 
       [:> rn/View (style :measure/number-and-cursors)
        (when showMeasureNumber
-         [:> rn/Text (style :measure/measure-number) measureNumber])
-       ;; variant with cursor between measures
-       (when (and (= measureNumber cursorPos) (not cursorOn))
-         (cursor {:bottom (if showMeasureNumber 16 2) :left -5}))
+         (cell-measure-number measureNumber))
 
-       ;; variant with cursor on measure
-       (when (and (= measureNumber cursorPos) cursorOn)
-         [:> rn/View (style :measure/cursor-on)
-          (cursor {:bottom 2})])]
+       (when (= measureNumber cursorPos)
+         (cell-cursor cursorOn showMeasureNumber))]
 
-      ;; tempo
       (when showTempo
-        [:> rn/View (style :measure/tempo)
-         (let [note ((keyword (str "note/" tempoMultiplier)) images)]
-           [:> rn/Image {:source (:img note)
-                         :style {:tint-color "black"
-                                 :width (* 0.7 (:width note))
-                                 :height (* 0.7 (:height note))}}])
-         [:> rn/Text (style :measure/tempo-text) (str "=" tempoNumber)]])]
+        (cell-tempo tempoMultiplier tempoNumber))]
 
-     [:> rn/View (style :measure/bar-lines)
-      (bar-lines "100%" 0 isSelected)]
-
-     [:> rn/View (style :measure/time-signature)
-      [:> rn/Text (style :measure/time-signature-text) beats]
-      [:> rn/Text (style :measure/time-signature-text) duration]]
-
-     [:> rn/View {:style {:position "absolute" :width "100%" :height "100%"
-                          :display "flex" :flex-direction "row"}}
-      [:> rn/TouchableWithoutFeedback
-       {:on-press (fn []
-                    (move-cursor! {:on false :pos measureNumber}))}
-       [:> rn/View {:style {:width 15 :height "100%"}}]]
-      [:> rn/TouchableWithoutFeedback
-       {:on-press (fn []
-                    (move-cursor! {:on true :pos measureNumber}))}
-       [:> rn/View {:style {:flex 1 :height "100%"}}]]
-      [:> rn/TouchableWithoutFeedback
-       {:on-press (fn []
-                    (move-cursor! {:on false :pos (inc measureNumber)}))}
-       [:> rn/View {:style {:width 15 :height "100%"}}]]]]))
+     (cell-bar-lines isSelected)
+     (cell-time-signature beats duration)
+     (cell-touch-areas measureNumber)]))
 
 (defn single-line-separator [measureNumber]
   [:> ViewOverflow {:style {:width 1 :height 65}}
