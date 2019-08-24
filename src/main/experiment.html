@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=800, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .staff {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .measure {
+      width: 68px;
+      height: 33px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .measure-segment {
+      background-color: white;
+      width: 100%;
+      height: 7px;
+      border-top: 1px solid black;
+    }
+
+    .measure-segment.last {
+      border-bottom: 1px solid black;
+    }
+
+    .bar {
+      height: 33px;
+      width: 1px;
+      background-color: black;
+    }
+
+    .double-bar {
+      height: 33px;
+      width: 3px;
+      background-color: black;
+    }
+
+    .double-bar .measure-segment {
+      margin-left: 1px;
+      width: 1px;
+    }
+
+    .header {
+      height: 33px;
+      width: 11px;
+      background-color: white;
+      border-right: 1px solid black;
+    }
+
+    .header .measure-segment {
+      width: 11px;
+    }
+
+    .footer {
+      width: 6px;
+      background-color: black;
+    }
+
+    .footer .measure-segment {
+      margin-left: 1px;
+      width: 2px;
+      background-color: white;
+
+    }
+  </style>
+</head>
+
+<body style="background-color: red;">
+  <div class="staff">
+    <div class="header">
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment last'></div>
+    </div>
+    <div class="measure">
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment last'></div>
+    </div>
+    <div class="bar"></div>
+    <div class="measure">
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment last'></div>
+    </div>
+    <div class="double-bar">
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment last'></div>
+    </div>
+    <div class="measure">
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment last'></div>
+    </div>
+    <div class="bar"></div>
+    <div class="measure">
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment last'></div>
+    </div>
+    <div class="footer">
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment'></div>
+      <div class='measure-segment last'></div>
+    </div>
+  </div>
+</body>
+
+</html>
