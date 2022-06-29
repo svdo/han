@@ -1,36 +1,31 @@
 {
-  "name": "Han",
+  "name": "HanSpike",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "devtools": "react-devtools",
-    "emu": "emulator -avd Nexus_5X_API_28_x86 &",
-    "ios": "react-native run-ios --simulator=\"iPhone X (12.2)\"",
-    "log-ios": "react-native-log-ios Han",
     "server": "shadow-cljs server",
-    "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "shadow-cljs watch :test",
+    "ios": "react-native run-ios --simulator=\"iPhone 13\"",
+    "start": "react-native start",
     "watch": "set -x;shadow-cljs watch --config-merge \"{:local-ip \\\"$(ipconfig getifaddr en0)\\\"}\" :han :player"
   },
   "dependencies": {
-    "react": "16.8.3",
-    "react-devtools": "^3.6.1",
-    "react-dom": "^16.8.6",
-    "react-native": "0.59.5",
-    "react-native-svg": "^9.5.1",
-    "react-native-view-overflow": "^0.0.4",
-    "react-native-webview": "^5.8.1"
+    "react": "17.0.2",
+    "react-native": "0.68.2",
+    "react-native-view-overflow": "^0.0.5",
+    "react-native-webview": "^11.22.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/runtime": "^7.4.3",
-    "babel-jest": "^24.7.1",
-    "jest": "^24.7.1",
-    "metro-react-native-babel-preset": "^0.53.1",
-    "react-native-log-ios": "^1.0.1",
-    "react-test-renderer": "16.8.3",
     "shadow-cljs": "^2.8.33"
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.32.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.67.0",
+    "react-test-renderer": "17.0.2",
   },
   "jest": {
     "preset": "react-native"
