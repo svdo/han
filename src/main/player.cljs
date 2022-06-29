@@ -8,9 +8,9 @@
 (defonce javascript-injected (atom false))
 
 (defn initial-js []
-  (def audio-engine-source (rc/inline "audio-engine-compiled-js-source.txt"))
-  (def replace-console-log (rc/inline "replace-console-log.js"))
-  (str replace-console-log audio-engine-source ";true"))
+  (let [audio-engine-source (rc/inline "audio-engine-compiled-js-source.txt")
+        replace-console-log (rc/inline "replace-console-log.js")]
+    (str replace-console-log audio-engine-source ";true")))
 
 (defn inject-javascript [ref]
   (when (and (some? ref)
